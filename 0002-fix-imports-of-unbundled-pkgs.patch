@@ -1,0 +1,35 @@
+diff --git a/pipenv/core.py b/pipenv/core.py
+index 79357ce..24d8f82 100644
+--- a/pipenv/core.py
++++ b/pipenv/core.py
+@@ -15,7 +15,7 @@ import click_completion
+ import crayons
+ import dotenv
+ import delegator
+-from .vendor import pexpect
++import pexpect
+ import pipfile
+ from blindspin import spinner
+ from requests.packages import urllib3
+diff --git a/tests/integration/conftest.py b/tests/integration/conftest.py
+index 3a07d14..34bb084 100644
+--- a/tests/integration/conftest.py
++++ b/tests/integration/conftest.py
+@@ -1,14 +1,14 @@
+ import json
+ import os
+ import warnings
++import requests
++import six
++import toml
+ 
+ import pytest
+ 
+ from pipenv._compat import TemporaryDirectory
+ from pipenv.vendor import delegator
+-from pipenv.vendor import requests
+-from pipenv.vendor import six
+-from pipenv.vendor import toml
+ 
+ 
+ if six.PY2:
