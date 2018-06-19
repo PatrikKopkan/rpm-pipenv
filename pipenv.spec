@@ -1,6 +1,6 @@
 Name:           pipenv 
 Version:        11.10.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -316,5 +316,8 @@ pytest-3 -v -n auto -m "not rpmfail" tests
 %license LICENSE
 
 %changelog
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 11.10.4-2
+- Rebuilt for Python 3.7
+
 * Fri Apr 13 2018 Michal Cyprian <mcyprian@redhat.com> - 11.10.4-1
 - Initial package.
