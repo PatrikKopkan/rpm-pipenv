@@ -80,6 +80,11 @@ Patch2:         0002-fix-imports-of-unbundled-pkgs.patch
 # TODO fix and propose changes upstream
 Patch3:         0003-rpmfail-pytest-marker.patch
 
+# Fix to support Python 3.7 in patched/bundled prettytoml
+# https://github.com/pypa/pipenv/issues/2426
+# https://github.com/jumpscale7/python-pretty-toml/pull/2
+Patch4:         0004-prettytoml-python37.patch
+
 BuildArch:      noarch
  
 BuildRequires:  python3-devel
@@ -318,6 +323,7 @@ pytest-3 -v -n auto -m "not rpmfail" tests
 %changelog
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 11.10.4-2
 - Rebuilt for Python 3.7
+- Add patch for patched/bundled prettytoml to work with 3.7
 
 * Fri Apr 13 2018 Michal Cyprian <mcyprian@redhat.com> - 11.10.4-1
 - Initial package.
