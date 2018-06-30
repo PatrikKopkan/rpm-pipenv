@@ -1,6 +1,6 @@
 Name:           pipenv 
 Version:        11.10.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -113,7 +113,6 @@ BuildRequires:  python3dist(iso8601)
 BuildRequires:  python3dist(jinja2)
 BuildRequires:  python3dist(markupsafe)
 BuildRequires:  python3dist(parse)
-BuildRequires:  python3dist(pathlib2)
 BuildRequires:  python3dist(pexpect)
 BuildRequires:  python3dist(requests) > 2.18.0
 BuildRequires:  python3dist(semver)
@@ -134,7 +133,6 @@ Requires:       python3dist(iso8601)
 Requires:       python3dist(jinja2)
 Requires:       python3dist(markupsafe)
 Requires:       python3dist(parse)
-Requires:       python3dist(pathlib2)
 Requires:       python3dist(pexpect)
 Requires:       python3dist(ptyprocess)
 Requires:       python3dist(pytoml)
@@ -321,6 +319,9 @@ pytest-3 -v -n auto -m "not rpmfail" tests
 %license LICENSE
 
 %changelog
+* Sat Jun 30 2018 Miro Hrončok <mhroncok@redhat.com> - 11.10.4-3
+- Do not require pathlib2, it's intended for Python < 3.5
+
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 11.10.4-2
 - Rebuilt for Python 3.7
 - Add patch for patched/bundled prettytoml to work with 3.7
