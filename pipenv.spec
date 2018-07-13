@@ -1,6 +1,6 @@
 Name:           pipenv 
 Version:        11.10.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -319,6 +319,9 @@ pytest-3 -v -n auto -m "not rpmfail" tests
 %license LICENSE
 
 %changelog
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 11.10.4-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Sat Jun 30 2018 Miro Hrončok <mhroncok@redhat.com> - 11.10.4-3
 - Do not require pathlib2, it's intended for Python < 3.5
 
