@@ -5,136 +5,132 @@ Date:   Fri May 11 10:37:35 2018 +0200
     Add fixture imports
 
 diff --git a/tests/integration/test_cli.py b/tests/integration/test_cli.py
-index ad84912b..4a6c7fd5 100644
+index a51095c..0bc8902 100644
 --- a/tests/integration/test_cli.py
 +++ b/tests/integration/test_cli.py
-@@ -8,6 +8,7 @@ import pytest
- 
+@@ -8,6 +8,8 @@ import pytest
+ from flaky import flaky
  from pipenv.utils import normalize_drive
  
 +from .fixtures.plugin import pypi, pypi_secure
++
  
  @pytest.mark.cli
  def test_pipenv_where(PipenvInstance, pypi_secure):
 diff --git a/tests/integration/test_dot_venv.py b/tests/integration/test_dot_venv.py
-index 0b4cb485..d991933d 100644
+index 0b4cb48..e545d01 100644
 --- a/tests/integration/test_dot_venv.py
 +++ b/tests/integration/test_dot_venv.py
-@@ -6,6 +6,7 @@ from pipenv.vendor import delegator
+@@ -6,6 +6,8 @@ from pipenv.vendor import delegator
  
  import pytest
  
 +from .fixtures.plugin import pypi
++
  
  @pytest.mark.dotvenv
  def test_venv_in_project(PipenvInstance, pypi):
 diff --git a/tests/integration/test_install_basic.py b/tests/integration/test_install_basic.py
-index f995ef91..fac0083f 100644
+index d4e967d..47670df 100644
 --- a/tests/integration/test_install_basic.py
 +++ b/tests/integration/test_install_basic.py
-@@ -8,6 +8,7 @@ import pytest
+@@ -10,6 +10,8 @@ import pytest
  
  from flaky import flaky
  
 +from .fixtures.plugin import pypi
++
  
  @pytest.mark.install
  @pytest.mark.setup
 diff --git a/tests/integration/test_install_markers.py b/tests/integration/test_install_markers.py
-index 87235d4a..3a434d66 100644
+index ee83179..58f29f2 100644
 --- a/tests/integration/test_install_markers.py
 +++ b/tests/integration/test_install_markers.py
-@@ -9,6 +9,7 @@ import pytest
+@@ -9,6 +9,8 @@ import pytest
  
  from flaky import flaky
  
 +from .fixtures.plugin import pypi
++
  
  py3_only = pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python3")
- 
+ skip_py37 = pytest.mark.skipif(sys.version_info >= (3, 7), reason="Skip for python 3.7")
 diff --git a/tests/integration/test_install_twists.py b/tests/integration/test_install_twists.py
-index b4b78632..44a2c59d 100644
+index 95d67da..adce703 100644
 --- a/tests/integration/test_install_twists.py
 +++ b/tests/integration/test_install_twists.py
-@@ -12,6 +12,7 @@ import pytest
+@@ -9,6 +9,8 @@ import pytest
  
  from flaky import flaky
  
 +from .fixtures.plugin import pypi
++
  
  @pytest.mark.extras
  @pytest.mark.install
 diff --git a/tests/integration/test_install_uri.py b/tests/integration/test_install_uri.py
-index 94391f57..f5f47047 100644
+index df2d44d..d27d690 100644
 --- a/tests/integration/test_install_uri.py
 +++ b/tests/integration/test_install_uri.py
-@@ -3,6 +3,7 @@ import os
- from flaky import flaky
+@@ -4,6 +4,8 @@ from flaky import flaky
  import delegator
+ from pipenv._compat import Path
  
 +from .fixtures.plugin import pypi
++
  
  @pytest.mark.vcs
  @pytest.mark.install
 diff --git a/tests/integration/test_lock.py b/tests/integration/test_lock.py
-index a14b8b10..9dd6a6ce 100644
+index 1ab34f1..95de475 100644
 --- a/tests/integration/test_lock.py
 +++ b/tests/integration/test_lock.py
-@@ -3,6 +3,7 @@ import os
+@@ -6,6 +6,8 @@ from pipenv.utils import temp_environ
  
  from flaky import flaky
  
 +from .fixtures.plugin import pypi
++
  
  @pytest.mark.lock
  @pytest.mark.requirements
 diff --git a/tests/integration/test_pipenv.py b/tests/integration/test_pipenv.py
-index 3d8a197b..94b91289 100644
+index 4734cbd..75a0a9d 100644
 --- a/tests/integration/test_pipenv.py
 +++ b/tests/integration/test_pipenv.py
-@@ -6,9 +6,9 @@ XXX: Try our best to reduce tests in this file.
- from pipenv.core import activate_virtualenv
- from pipenv.project import Project
- 
--
- import pytest
+@@ -14,6 +14,8 @@ from pipenv.project import Project
+ from pipenv.vendor import delegator
+ from pipenv._compat import Path
  
 +from .fixtures.plugin import pypi
++
  
  @pytest.mark.code
  @pytest.mark.install
-diff --git a/tests/integration/test_project.py b/tests/integration/test_project.py
-index 9a03c5c1..1997290c 100644
---- a/tests/integration/test_project.py
-+++ b/tests/integration/test_project.py
-@@ -6,6 +6,7 @@ from pipenv.project import Project
- from pipenv.utils import temp_environ
- from pipenv.patched import pipfile
- 
-+from .fixtures.plugin import pypi
- 
- @pytest.mark.project
- @pytest.mark.sources
 diff --git a/tests/integration/test_sync.py b/tests/integration/test_sync.py
-index 1116ed83..407bc40b 100644
+index 401eadf..0799154 100644
 --- a/tests/integration/test_sync.py
 +++ b/tests/integration/test_sync.py
-@@ -1,5 +1,6 @@
+@@ -4,6 +4,8 @@ from pipenv.utils import temp_environ
+ 
  import pytest
  
 +from .fixtures.plugin import pypi
++
  
  @pytest.mark.sync
  def test_sync_error_without_lockfile(PipenvInstance, pypi):
 diff --git a/tests/integration/test_uninstall.py b/tests/integration/test_uninstall.py
-index ff6dd3e1..40cccce8 100644
+index e51894a..dffbdbc 100644
 --- a/tests/integration/test_uninstall.py
 +++ b/tests/integration/test_uninstall.py
-@@ -3,6 +3,7 @@ import shutil
+@@ -5,6 +5,8 @@ from pipenv.utils import temp_environ
  
  import pytest
  
 +from .fixtures.plugin import pypi
++
  
  @pytest.mark.run
  @pytest.mark.uninstall

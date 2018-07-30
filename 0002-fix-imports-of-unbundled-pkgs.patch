@@ -1,18 +1,18 @@
-diff --git a/pipenv/core.py b/pipenv/core.py
-index 79357ce..24d8f82 100644
---- a/pipenv/core.py
-+++ b/pipenv/core.py
-@@ -15,7 +15,7 @@ import click_completion
- import crayons
- import dotenv
- import delegator
--from .vendor import pexpect
-+import pexpect
- import pipfile
- from blindspin import spinner
- from requests.packages import urllib3
+diff --git a/pipenv/utils.py b/pipenv/utils.py
+index 60c12cb..ef2555d 100644
+--- a/pipenv/utils.py
++++ b/pipenv/utils.py
+@@ -218,7 +218,7 @@ def prepare_pip_source_args(sources, pip_args=None):
+ def actually_resolve_deps(
+     deps, index_lookup, markers_lookup, project, sources, verbose, clear, pre, req_dir=None
+ ):
+-    from .vendor.packaging.markers import default_environment
++    from packaging.markers import default_environment
+     from .patched.notpip._internal import basecommand
+     from .patched.notpip._internal.cmdoptions import no_binary, only_binary
+     from .patched.notpip._internal.req import parse_requirements
 diff --git a/tests/integration/conftest.py b/tests/integration/conftest.py
-index 3a07d14..34bb084 100644
+index d71f0f8..dd31adf 100644
 --- a/tests/integration/conftest.py
 +++ b/tests/integration/conftest.py
 @@ -1,14 +1,14 @@
@@ -25,11 +25,11 @@ index 3a07d14..34bb084 100644
  
  import pytest
  
- from pipenv._compat import TemporaryDirectory
+ from pipenv._compat import TemporaryDirectory, Path
  from pipenv.vendor import delegator
 -from pipenv.vendor import requests
 -from pipenv.vendor import six
 -from pipenv.vendor import toml
  
- 
  if six.PY2:
+     class ResourceWarning(Warning):

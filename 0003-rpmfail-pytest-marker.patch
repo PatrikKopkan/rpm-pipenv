@@ -1,8 +1,8 @@
 diff --git a/tests/integration/test_cli.py b/tests/integration/test_cli.py
-index 4a6c7fd..6a5bfbd 100644
+index 0bc8902..1bdd400 100644
 --- a/tests/integration/test_cli.py
 +++ b/tests/integration/test_cli.py
-@@ -16,6 +16,7 @@ def test_pipenv_where(PipenvInstance, pypi_secure):
+@@ -17,6 +17,7 @@ def test_pipenv_where(PipenvInstance, pypi_secure):
          assert normalize_drive(p.path) in p.pipenv('--where').out
  
  
@@ -10,15 +10,15 @@ index 4a6c7fd..6a5bfbd 100644
  @pytest.mark.cli
  def test_pipenv_venv(PipenvInstance):
      with PipenvInstance() as p:
-@@ -32,6 +33,7 @@ def test_pipenv_py(PipenvInstance):
-         assert os.path.basename(python).startswith('python')
+@@ -39,6 +40,7 @@ def test_pipenv_support(PipenvInstance):
+         assert p.pipenv('--support').out
  
  
 +@pytest.mark.rpmfail
  @pytest.mark.cli
  def test_pipenv_rm(PipenvInstance):
      with PipenvInstance() as p:
-@@ -43,6 +45,7 @@ def test_pipenv_rm(PipenvInstance):
+@@ -50,6 +52,7 @@ def test_pipenv_rm(PipenvInstance):
          assert not os.path.isdir(venv_path)
  
  
@@ -26,8 +26,8 @@ index 4a6c7fd..6a5bfbd 100644
  @pytest.mark.cli
  def test_pipenv_graph(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
-@@ -51,6 +54,7 @@ def test_pipenv_graph(PipenvInstance, pypi):
-         assert 'requests' in p.pipenv('graph --json').out
+@@ -59,6 +62,7 @@ def test_pipenv_graph(PipenvInstance, pypi):
+         assert 'requests' in p.pipenv('graph --json-tree').out
  
  
 +@pytest.mark.rpmfail
@@ -35,18 +35,18 @@ index 4a6c7fd..6a5bfbd 100644
  def test_pipenv_graph_reverse(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
 diff --git a/tests/integration/test_dot_venv.py b/tests/integration/test_dot_venv.py
-index d991933..e35acbc 100644
+index e545d01..866a337 100644
 --- a/tests/integration/test_dot_venv.py
 +++ b/tests/integration/test_dot_venv.py
-@@ -8,6 +8,7 @@ import pytest
- 
+@@ -9,6 +9,7 @@ import pytest
  from .fixtures.plugin import pypi
+ 
  
 +@pytest.mark.rpmfail
  @pytest.mark.dotvenv
  def test_venv_in_project(PipenvInstance, pypi):
      with temp_environ():
-@@ -18,6 +19,7 @@ def test_venv_in_project(PipenvInstance, pypi):
+@@ -19,6 +20,7 @@ def test_venv_in_project(PipenvInstance, pypi):
              assert normalize_drive(p.path) in p.pipenv('--venv').out
  
  
@@ -54,7 +54,7 @@ index d991933..e35acbc 100644
  @pytest.mark.dotvenv
  def test_venv_at_project_root(PipenvInstance):
      with temp_environ():
-@@ -33,6 +35,7 @@ def test_venv_at_project_root(PipenvInstance):
+@@ -34,6 +36,7 @@ def test_venv_at_project_root(PipenvInstance):
              assert normalize_drive(p.path) in p.pipenv('--venv').out
  
  
@@ -63,19 +63,10 @@ index d991933..e35acbc 100644
  def test_reuse_previous_venv(PipenvInstance, pypi):
      with PipenvInstance(chdir=True, pypi=pypi) as p:
 diff --git a/tests/integration/test_install_basic.py b/tests/integration/test_install_basic.py
-index fac0083..e2c75a8 100644
+index 47670df..7536b35 100644
 --- a/tests/integration/test_install_basic.py
 +++ b/tests/integration/test_install_basic.py
-@@ -6,8 +6,6 @@ from pipenv.vendor import delegator
- 
- import pytest
- 
--from flaky import flaky
--
- from .fixtures.plugin import pypi
- 
- @pytest.mark.install
-@@ -28,7 +26,7 @@ def test_basic_setup(PipenvInstance, pypi):
+@@ -31,7 +31,7 @@ def test_basic_setup(PipenvInstance, pypi):
  
  
  @pytest.mark.install
@@ -84,7 +75,17 @@ index fac0083..e2c75a8 100644
  def test_basic_install(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
          c = p.pipenv('install requests')
-@@ -55,7 +53,7 @@ def test_complex_lock(PipenvInstance, pypi):
+@@ -44,8 +44,8 @@ def test_basic_install(PipenvInstance, pypi):
+         assert 'certifi' in p.lockfile['default']
+ 
+ 
++@pytest.mark.rpmfail
+ @pytest.mark.install
+-@flaky
+ def test_mirror_install(PipenvInstance, pypi):
+     with temp_environ(), PipenvInstance(chdir=True) as p:
+         mirror_url = os.environ.pop('PIPENV_TEST_INDEX', "https://pypi.python.org/simple")
+@@ -93,7 +93,7 @@ def test_complex_lock(PipenvInstance, pypi):
  
  @pytest.mark.dev
  @pytest.mark.run
@@ -93,7 +94,7 @@ index fac0083..e2c75a8 100644
  def test_basic_dev_install(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
          c = p.pipenv('install requests --dev')
-@@ -73,7 +71,7 @@ def test_basic_dev_install(PipenvInstance, pypi):
+@@ -111,7 +111,7 @@ def test_basic_dev_install(PipenvInstance, pypi):
  
  @pytest.mark.dev
  @pytest.mark.install
@@ -102,7 +103,7 @@ index fac0083..e2c75a8 100644
  def test_install_without_dev(PipenvInstance, pypi):
      """Ensure that running `pipenv install` doesn't install dev packages"""
      with PipenvInstance(pypi=pypi, chdir=True) as p:
-@@ -99,7 +97,7 @@ pytz = "*"
+@@ -137,7 +137,7 @@ pytz = "*"
  
  
  @pytest.mark.install
@@ -111,7 +112,7 @@ index fac0083..e2c75a8 100644
  def test_install_without_dev_section(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
          with open(p.pipfile_path, 'w') as f:
-@@ -120,7 +118,7 @@ six = "*"
+@@ -158,7 +158,7 @@ six = "*"
  
  @pytest.mark.extras
  @pytest.mark.install
@@ -120,7 +121,7 @@ index fac0083..e2c75a8 100644
  def test_extras_install(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi, chdir=True) as p:
          c = p.pipenv('install requests[socks]')
-@@ -137,7 +135,7 @@ def test_extras_install(PipenvInstance, pypi):
+@@ -175,7 +175,7 @@ def test_extras_install(PipenvInstance, pypi):
  
  @pytest.mark.install
  @pytest.mark.pin
@@ -129,7 +130,7 @@ index fac0083..e2c75a8 100644
  def test_windows_pinned_pipfile(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
          with open(p.pipfile_path, 'w') as f:
-@@ -155,7 +153,7 @@ tablib = "<0.12"
+@@ -193,7 +193,7 @@ tablib = "<0.12"
  @pytest.mark.install
  @pytest.mark.resolver
  @pytest.mark.backup_resolver
@@ -138,7 +139,7 @@ index fac0083..e2c75a8 100644
  def test_backup_resolver(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
          with open(p.pipfile_path, 'w') as f:
-@@ -172,7 +170,7 @@ def test_backup_resolver(PipenvInstance, pypi):
+@@ -210,7 +210,7 @@ def test_backup_resolver(PipenvInstance, pypi):
  
  @pytest.mark.run
  @pytest.mark.alt
@@ -147,44 +148,35 @@ index fac0083..e2c75a8 100644
  def test_alternative_version_specifier(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
          with open(p.pipfile_path, 'w') as f:
-@@ -233,6 +231,7 @@ def test_requirements_to_pipfile(PipenvInstance, pypi):
-         assert 'pysocks' in p.lockfile['default']
+@@ -300,6 +300,7 @@ tablib = "<0.12"
+         assert 'requests' not in p.lockfile['default']
  
  
 +@pytest.mark.rpmfail
  @pytest.mark.cli
  @pytest.mark.clean
  def test_clean_on_empty_venv(PipenvInstance, pypi):
-@@ -241,6 +240,7 @@ def test_clean_on_empty_venv(PipenvInstance, pypi):
+@@ -308,6 +309,7 @@ def test_clean_on_empty_venv(PipenvInstance, pypi):
          assert c.return_code == 0
  
  
 +@pytest.mark.rpmfail
  @pytest.mark.install
  def test_install_does_not_extrapolate_environ(PipenvInstance, pypi):
-     with temp_environ(), PipenvInstance(pypi=pypi, chdir=True) as p:
+     """Ensure environment variables are not expanded in lock file.
+@@ -365,6 +367,7 @@ def test_install_venv_project_directory(PipenvInstance, pypi):
+             assert Path(project.virtualenv_location).joinpath('.project').exists()
+ 
+ 
++@pytest.mark.rpmfail
+ @pytest.mark.deploy
+ @pytest.mark.system
+ def test_system_and_deploy_work(PipenvInstance, pypi):
 diff --git a/tests/integration/test_install_markers.py b/tests/integration/test_install_markers.py
-index 3a434d6..6150127 100644
+index 58f29f2..767d830 100644
 --- a/tests/integration/test_install_markers.py
 +++ b/tests/integration/test_install_markers.py
-@@ -7,15 +7,13 @@ from pipenv.utils import temp_environ
- 
- import pytest
- 
--from flaky import flaky
--
- from .fixtures.plugin import pypi
- 
- py3_only = pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python3")
- 
- 
- @pytest.mark.markers
--@flaky
-+@pytest.mark.rpmfail
- def test_package_environment_markers(PipenvInstance, pypi):
- 
-     with PipenvInstance(pypi=pypi) as p:
-@@ -38,7 +36,7 @@ tablib = {version = "*", markers="os_name=='splashwear'"}
+@@ -64,7 +64,7 @@ depends-on-marked-package = "*"
  @pytest.mark.run
  @pytest.mark.alt
  @pytest.mark.install
@@ -193,7 +185,7 @@ index 3a434d6..6150127 100644
  def test_specific_package_environment_markers(PipenvInstance, pypi):
  
      with PipenvInstance(pypi=pypi) as p:
-@@ -60,7 +58,7 @@ requests = {version = "*", os_name = "== 'splashwear'"}
+@@ -86,7 +86,7 @@ requests = {version = "*", os_name = "== 'splashwear'"}
  
  
  @pytest.mark.markers
@@ -202,7 +194,7 @@ index 3a434d6..6150127 100644
  def test_top_level_overrides_environment_markers(PipenvInstance, pypi):
      """Top-level environment markers should take precedence.
      """
-@@ -81,7 +79,7 @@ funcsigs = {version = "*", os_name = "== 'splashwear'"}
+@@ -107,7 +107,7 @@ funcsigs = {version = "*", os_name = "== 'splashwear'"}
  
  @pytest.mark.markers
  @pytest.mark.install
@@ -211,16 +203,16 @@ index 3a434d6..6150127 100644
  def test_global_overrides_environment_markers(PipenvInstance, pypi):
      """Empty (unconditional) dependency should take precedence.
      If a dependency is specified without environment markers, it should
-@@ -106,7 +104,7 @@ funcsigs = "*"
+@@ -132,7 +132,7 @@ funcsigs = "*"
  
  @pytest.mark.lock
  @pytest.mark.complex
 -@flaky
 +@pytest.mark.rpmfail
  @py3_only
+ @skip_py37
  def test_resolver_unique_markers(PipenvInstance, pypi):
-     """vcrpy has a dependency on `yarl` which comes with a marker
-@@ -126,7 +124,7 @@ def test_resolver_unique_markers(PipenvInstance, pypi):
+@@ -156,7 +156,7 @@ def test_resolver_unique_markers(PipenvInstance, pypi):
  
  
  @pytest.mark.project
@@ -230,19 +222,10 @@ index 3a434d6..6150127 100644
      with PipenvInstance(chdir=True, pypi=pypi) as p:
          with temp_environ():
 diff --git a/tests/integration/test_install_twists.py b/tests/integration/test_install_twists.py
-index 44a2c59..b1dff09 100644
+index adce703..aa574da 100644
 --- a/tests/integration/test_install_twists.py
 +++ b/tests/integration/test_install_twists.py
-@@ -10,8 +10,6 @@ from pipenv.utils import mkdir_p, temp_environ
- 
- import pytest
- 
--from flaky import flaky
--
- from .fixtures.plugin import pypi
- 
- @pytest.mark.extras
-@@ -65,7 +63,7 @@ def test_e_dot(PipenvInstance, pip_src_dir):
+@@ -74,7 +74,7 @@ def test_e_dot(PipenvInstance, pip_src_dir):
  
  
  @pytest.mark.install
@@ -251,7 +234,7 @@ index 44a2c59..b1dff09 100644
  def test_multiprocess_bug_and_install(PipenvInstance, pypi):
      with temp_environ():
          os.environ['PIPENV_MAX_SUBPROCESS'] = '2'
-@@ -93,7 +91,7 @@ urllib3 = "*"
+@@ -102,7 +102,7 @@ urllib3 = "*"
  
  @pytest.mark.sequential
  @pytest.mark.install
@@ -260,7 +243,7 @@ index 44a2c59..b1dff09 100644
  def test_sequential_mode(PipenvInstance, pypi):
  
      with PipenvInstance(pypi=pypi, chdir=True) as p:
-@@ -117,6 +115,7 @@ pytz = "*"
+@@ -126,6 +126,7 @@ pytz = "*"
          assert c.return_code == 0
  
  
@@ -268,7 +251,7 @@ index 44a2c59..b1dff09 100644
  @pytest.mark.install
  @pytest.mark.run
  def test_normalize_name_install(PipenvInstance, pypi):
-@@ -150,7 +149,7 @@ Requests = "==2.14.0"   # Inline comment
+@@ -159,7 +160,7 @@ Requests = "==2.14.0"   # Inline comment
  @pytest.mark.files
  @pytest.mark.resolver
  @pytest.mark.eggs
@@ -277,7 +260,7 @@ index 44a2c59..b1dff09 100644
  def test_local_package(PipenvInstance, pip_src_dir, pypi, testsroot):
      """This test ensures that local packages (directories with a setup.py)
      installed in editable mode have their dependencies resolved as well"""
-@@ -171,7 +170,7 @@ def test_local_package(PipenvInstance, pip_src_dir, pypi, testsroot):
+@@ -180,7 +181,7 @@ def test_local_package(PipenvInstance, pip_src_dir, pypi, testsroot):
  
  
  @pytest.mark.files
@@ -286,7 +269,7 @@ index 44a2c59..b1dff09 100644
  def test_local_zipfiles(PipenvInstance, pypi, testsroot):
      file_name = 'tablib-0.12.1.tar.gz'
      # Not sure where travis/appveyor run tests from
-@@ -196,7 +195,7 @@ def test_local_zipfiles(PipenvInstance, pypi, testsroot):
+@@ -205,7 +206,7 @@ def test_local_zipfiles(PipenvInstance, pypi, testsroot):
  
  
  @pytest.mark.files
@@ -295,7 +278,7 @@ index 44a2c59..b1dff09 100644
  def test_relative_paths(PipenvInstance, pypi, testsroot):
      file_name = 'tablib-0.12.1.tar.gz'
      source_path = os.path.abspath(os.path.join(testsroot, 'test_artifacts', file_name))
-@@ -218,7 +217,7 @@ def test_relative_paths(PipenvInstance, pypi, testsroot):
+@@ -228,7 +229,7 @@ def test_relative_paths(PipenvInstance, pypi, testsroot):
  
  @pytest.mark.install
  @pytest.mark.local_file
@@ -305,17 +288,10 @@ index 44a2c59..b1dff09 100644
      with PipenvInstance(pypi=pypi) as p:
          target_package = 'alembic'
 diff --git a/tests/integration/test_install_uri.py b/tests/integration/test_install_uri.py
-index f5f4704..b56b944 100644
+index d27d690..7822ace 100644
 --- a/tests/integration/test_install_uri.py
 +++ b/tests/integration/test_install_uri.py
-@@ -1,6 +1,5 @@
- import pytest
- import os
--from flaky import flaky
- import delegator
- 
- from .fixtures.plugin import pypi
-@@ -8,7 +7,7 @@ from .fixtures.plugin import pypi
+@@ -10,7 +10,7 @@ from .fixtures.plugin import pypi
  @pytest.mark.vcs
  @pytest.mark.install
  @pytest.mark.needs_internet
@@ -323,8 +299,8 @@ index f5f4704..b56b944 100644
 +@pytest.mark.rpmfail
  def test_basic_vcs_install(PipenvInstance, pip_src_dir, pypi):
      with PipenvInstance(pypi=pypi, chdir=True) as p:
-         c = p.pipenv('install git+https://github.com/benjaminp/six.git#egg=six')
-@@ -25,7 +24,7 @@ def test_basic_vcs_install(PipenvInstance, pip_src_dir, pypi):
+         c = p.pipenv('install git+https://github.com/benjaminp/six.git@1.11.0#egg=six')
+@@ -27,7 +27,7 @@ def test_basic_vcs_install(PipenvInstance, pip_src_dir, pypi):
  @pytest.mark.files
  @pytest.mark.urls
  @pytest.mark.needs_internet
@@ -333,7 +309,7 @@ index f5f4704..b56b944 100644
  def test_urls_work(PipenvInstance, pypi, pip_src_dir):
      with PipenvInstance(pypi=pypi) as p:
          c = p.pipenv('install https://github.com/divio/django-cms/archive/release/3.4.x.zip')
-@@ -41,7 +40,7 @@ def test_urls_work(PipenvInstance, pypi, pip_src_dir):
+@@ -79,7 +79,7 @@ def test_local_vcs_urls_work(PipenvInstance, pypi):
  @pytest.mark.files
  @pytest.mark.urls
  @pytest.mark.needs_internet
@@ -342,7 +318,7 @@ index f5f4704..b56b944 100644
  def test_install_remote_requirements(PipenvInstance, pypi):
      with PipenvInstance(pypi=pypi) as p:
          # using a github hosted requirements.txt file
-@@ -63,7 +62,7 @@ def test_install_remote_requirements(PipenvInstance, pypi):
+@@ -101,7 +101,7 @@ def test_install_remote_requirements(PipenvInstance, pypi):
  @pytest.mark.vcs
  @pytest.mark.install
  @pytest.mark.needs_internet
@@ -351,7 +327,7 @@ index f5f4704..b56b944 100644
  def test_editable_vcs_install(PipenvInstance, pip_src_dir, pypi):
      with PipenvInstance(pypi=pypi) as p:
          c = p.pipenv('install -e git+https://github.com/requests/requests.git#egg=requests')
-@@ -82,7 +81,7 @@ def test_editable_vcs_install(PipenvInstance, pip_src_dir, pypi):
+@@ -120,7 +120,7 @@ def test_editable_vcs_install(PipenvInstance, pip_src_dir, pypi):
  @pytest.mark.vcs
  @pytest.mark.tablib
  @pytest.mark.needs_internet
@@ -361,22 +337,10 @@ index f5f4704..b56b944 100644
      # This uses the real PyPI since we need Internet to access the Git
      # dependency anyway.
 diff --git a/tests/integration/test_lock.py b/tests/integration/test_lock.py
-index 9dd6a6c..da56595 100644
+index 95de475..366567d 100644
 --- a/tests/integration/test_lock.py
 +++ b/tests/integration/test_lock.py
-@@ -1,10 +1,9 @@
- import pytest
- import os
- 
--from flaky import flaky
--
- from .fixtures.plugin import pypi
- 
-+@pytest.mark.rpmfail
- @pytest.mark.lock
- @pytest.mark.requirements
- def test_lock_handle_eggs(PipenvInstance, pypi):
-@@ -22,6 +21,7 @@ RandomWords = "*"
+@@ -26,6 +26,7 @@ RandomWords = "*"
          assert p.lockfile['default']['randomwords']['version'] == '==0.2.1'
  
  
@@ -384,7 +348,7 @@ index 9dd6a6c..da56595 100644
  @pytest.mark.lock
  @pytest.mark.requirements
  def test_lock_requirements_file(PipenvInstance, pypi):
-@@ -52,6 +52,7 @@ flask = "==0.12.2"
+@@ -56,6 +57,7 @@ flask = "==0.12.2"
              assert req in d.out
  
  
@@ -392,7 +356,7 @@ index 9dd6a6c..da56595 100644
  @pytest.mark.lock
  def test_lock_keep_outdated(PipenvInstance, pypi):
  
-@@ -124,6 +125,7 @@ requests = {git = "https://github.com/requests/requests.git"}
+@@ -128,6 +130,7 @@ requests = {git = "https://github.com/requests/requests.git"}
          assert 'python_dateutil' not in lock['develop']
  
  
@@ -400,7 +364,7 @@ index 9dd6a6c..da56595 100644
  @pytest.mark.lock
  @pytest.mark.requirements
  def test_lock_with_prereleases(PipenvInstance, pypi):
-@@ -148,7 +150,7 @@ allow_prereleases = true
+@@ -152,7 +155,7 @@ allow_prereleases = true
  @pytest.mark.complex
  @pytest.mark.maya
  @pytest.mark.needs_internet
@@ -409,8 +373,8 @@ index 9dd6a6c..da56595 100644
  def test_complex_deps_lock_and_install_properly(PipenvInstance, pip_src_dir, pypi):
      # This uses the real PyPI because Maya has too many dependencies...
      with PipenvInstance(chdir=True, pypi=pypi) as p:
-@@ -251,6 +253,7 @@ requests = "*"
-         assert '--extra-index-url https://test.pypi.org/simple' in c.out.strip()
+@@ -295,6 +298,7 @@ requests = "*"
+         assert '--extra-index-url {}'.format(mirror_url) not in c.out.strip()
  
  
 +@pytest.mark.rpmfail
@@ -418,11 +382,11 @@ index 9dd6a6c..da56595 100644
  @pytest.mark.index
  def test_lock_updated_source(PipenvInstance, pypi):
 diff --git a/tests/integration/test_pipenv.py b/tests/integration/test_pipenv.py
-index 94b9128..d0234b9 100644
+index 75a0a9d..668c3ad 100644
 --- a/tests/integration/test_pipenv.py
 +++ b/tests/integration/test_pipenv.py
-@@ -30,6 +30,7 @@ def test_activate_virtualenv_no_source():
-     assert command == '{0}/bin/activate'.format(venv)
+@@ -28,6 +28,7 @@ def test_code_import_manual(PipenvInstance):
+         assert 'requests' in p.pipfile['packages']
  
  
 +@pytest.mark.rpmfail
@@ -430,10 +394,10 @@ index 94b9128..d0234b9 100644
  @pytest.mark.deploy
  @pytest.mark.cli
 diff --git a/tests/integration/test_project.py b/tests/integration/test_project.py
-index 1997290..53d9570 100644
+index 5deccc8..2ec08ef 100644
 --- a/tests/integration/test_project.py
 +++ b/tests/integration/test_project.py
-@@ -30,6 +30,7 @@ pytz = "*"
+@@ -29,6 +29,7 @@ pytz = "*"
              assert 'localhost:5000' not in str(pipfile.load(p.pipfile_path))
  
  
@@ -441,7 +405,7 @@ index 1997290..53d9570 100644
  @pytest.mark.project
  @pytest.mark.sources
  @pytest.mark.parametrize('lock_first', [True, False])
-@@ -77,6 +78,7 @@ six = {{version = "*", index = "pypi"}}
+@@ -76,6 +77,7 @@ six = {{version = "*", index = "pypi"}}
              assert sorted(source.items()) == sorted(project.find_source(url).items())
  
  
@@ -449,7 +413,7 @@ index 1997290..53d9570 100644
  @pytest.mark.install
  @pytest.mark.project
  @pytest.mark.parametrize('newlines', [u'\n', u'\r\n'])
-@@ -114,6 +116,7 @@ def test_maintain_file_line_endings(PipenvInstance, pypi, newlines):
+@@ -113,6 +115,7 @@ def test_maintain_file_line_endings(PipenvInstance, pypi, newlines):
              # message because of  https://github.com/pytest-dev/pytest/issues/3443
  
  
@@ -478,30 +442,38 @@ index 72f1059..14b9172 100644
  def test_scripts(PipenvInstance):
      with PipenvInstance(chdir=True) as p:
 diff --git a/tests/integration/test_sync.py b/tests/integration/test_sync.py
-index 407bc40..14a5e4a 100644
+index 0799154..8fe62a8 100644
 --- a/tests/integration/test_sync.py
 +++ b/tests/integration/test_sync.py
-@@ -15,6 +15,7 @@ def test_sync_error_without_lockfile(PipenvInstance, pypi):
+@@ -20,6 +20,7 @@ def test_sync_error_without_lockfile(PipenvInstance, pypi):
          assert 'Pipfile.lock is missing!' in c.err
  
  
 +@pytest.mark.rpmfail
  @pytest.mark.sync
  @pytest.mark.lock
- def test_sync_should_not_lock(PipenvInstance, pypi):
+ def test_mirror_lock_sync(PipenvInstance, pypi):
 diff --git a/tests/integration/test_uninstall.py b/tests/integration/test_uninstall.py
-index 40cccce..f051ff5 100644
+index dffbdbc..fffe440 100644
 --- a/tests/integration/test_uninstall.py
 +++ b/tests/integration/test_uninstall.py
-@@ -5,6 +5,7 @@ import pytest
- 
+@@ -8,6 +8,7 @@ import pytest
  from .fixtures.plugin import pypi
+ 
  
 +@pytest.mark.rpmfail
  @pytest.mark.run
  @pytest.mark.uninstall
  @pytest.mark.install
-@@ -32,6 +33,7 @@ def test_uninstall(PipenvInstance, pypi):
+@@ -35,6 +36,7 @@ def test_uninstall(PipenvInstance, pypi):
+         assert c.return_code > 0
+ 
+ 
++@pytest.mark.rpmfail
+ @pytest.mark.run
+ @pytest.mark.uninstall
+ @pytest.mark.install
+@@ -76,6 +78,7 @@ def test_mirror_uninstall(PipenvInstance, pypi):
          assert c.return_code > 0
  
  
@@ -509,7 +481,7 @@ index 40cccce..f051ff5 100644
  @pytest.mark.files
  @pytest.mark.uninstall
  @pytest.mark.install
-@@ -51,6 +53,7 @@ def test_uninstall_all_local_files(PipenvInstance, testsroot):
+@@ -95,6 +98,7 @@ def test_uninstall_all_local_files(PipenvInstance, testsroot):
          assert 'tablib' not in p.pipfile['packages']
  
  
@@ -517,7 +489,7 @@ index 40cccce..f051ff5 100644
  @pytest.mark.run
  @pytest.mark.uninstall
  @pytest.mark.install
-@@ -85,6 +88,7 @@ def test_uninstall_all_dev(PipenvInstance, pypi):
+@@ -129,6 +133,7 @@ def test_uninstall_all_dev(PipenvInstance, pypi):
          assert c.return_code == 0
  
  
@@ -526,14 +498,22 @@ index 40cccce..f051ff5 100644
  @pytest.mark.run
  def test_normalize_name_uninstall(PipenvInstance, pypi):
 diff --git a/tests/unit/test_utils.py b/tests/unit/test_utils.py
-index f314b7e..f206646 100644
+index 7fafdaa..6dc75f4 100644
 --- a/tests/unit/test_utils.py
 +++ b/tests/unit/test_utils.py
-@@ -272,6 +272,7 @@ class TestUtils:
-     def test_win_converted_relative_path(self, input_path, expected):
-         assert pipenv.utils.get_converted_relative_path(input_path) == expected
+@@ -221,6 +221,7 @@ class TestUtils:
+         assert pipenv.utils.is_valid_url(not_url) is False
+ 
+     @pytest.mark.utils
++    @pytest.mark.rpmfail
+     def test_download_file(self):
+         url = "https://github.com/kennethreitz/pipenv/blob/master/README.rst"
+         output = "test_download.rst"
+@@ -269,6 +270,7 @@ twine = "*"
+     def test_win_normalize_drive(self, input_path, expected):
+         assert pipenv.utils.normalize_drive(input_path) == expected
  
 +    @pytest.mark.rpmfail
      @pytest.mark.utils
-     def test_download_file(self):
-         url = "https://github.com/kennethreitz/pipenv/blob/master/README.rst"
+     @pytest.mark.parametrize(
+         'input_path, expected',
