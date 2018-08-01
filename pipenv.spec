@@ -4,7 +4,7 @@
 
 Name:           pipenv 
 Version:        2018.7.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -163,9 +163,9 @@ Requires:       python3dist(toml)
 # TODO package for Fedora and unbundle
 Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
 Provides:       bundled(python3dist(delegator)) == 0.1.0
-Provides:       bundled(python3dist(dotenv)) == 0.6.2
 Provides:       bundled(python3dist(pipdeptree))
 Provides:       bundled(python3dist(pipreqs)) == 0.4.9
+Provides:       bundled(python3dist(python-dotenv)) == 0.6.2
 Provides:       bundled(python3dist(pythonfinder))
 Provides:       bundled(python3dist(requirementslib)) == 1.0.9
 Provides:       bundled(python3dist(requirements-parser)) == 0.2.0
@@ -367,6 +367,9 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Wed Aug 01 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.7.1-2
+- Correct the name of bundled dotenv to python-dotenv
+
 * Fri Jul 27 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.7.1-1
 - Update to 2018.7.1 (#1609432)
 
