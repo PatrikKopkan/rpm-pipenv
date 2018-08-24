@@ -83,6 +83,7 @@ BuildRequires:  python3dist(flask)
 BuildRequires:  python3dist(invoke)
 BuildRequires:  python3dist(mock)
 BuildRequires:  python3dist(parver)
+BuildRequires:  python3dist(pip)
 BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(pytest-xdist)
 BuildRequires:  python3dist(setuptools)
@@ -98,7 +99,6 @@ BuildRequires:  python3dist(virtualenv-clone)
 
 %if %{with python2_tests}
 BuildRequires:  python2-devel
-BuildRequires:  python2dist(virtualenv)
 %endif
 
 # Packages vendored upstream
@@ -275,15 +275,14 @@ unlink check_pythonpath/__pycache__
 mkdir check_pythonpath/__pycache__
 ln -sf %{python3_sitelib}/__pycache__/* %{python3_sitearch}/__pycache__/* check_pythonpath/__pycache__/
 
-# we also make sure "python" and "virtualenv" exists and means something
+# we also make sure "python" exists and means something
 mkdir check_path
 %if %{with python2_tests}
 ln -s %{__python2} check_path/python
-ln -s %{_bindir}/virtualenv-2 check_path/virtualenv
 %else
 ln -s %{__python3} check_path/python
-ln -s %{_bindir}/virtualenv-3 check_path/virtualenv
 %endif
+test -f %{_bindir}/virtualenv || ln -s %{_bindir}/virtualenv-3 check_path/virtualenv
 
 export PATH=$PWD/check_path:$PATH:%{buildroot}%{_bindir}
 export PYTHONPATH=$PWD/check_pythonpath
