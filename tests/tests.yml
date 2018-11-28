@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  roles:
+  - role: standard-test-basic
+    tags:
+    - classic
+    tests:
+    - smoke:
+        run: pipenv --three && pipenv install six
+    required_packages:
+    - pipenv
