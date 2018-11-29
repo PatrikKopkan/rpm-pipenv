@@ -3,7 +3,7 @@
 # times before filling bugz.
 
 Name:           pipenv 
-Version:        2018.11.14
+Version:        2018.11.26
 Release:        1%{?dist}
 Summary:        The higher level Python packaging tool
 
@@ -178,13 +178,13 @@ Provides:       bundled(python3dist(passa))
 Provides:       bundled(python3dist(pipdeptree)) == 0.13.0
 Provides:       bundled(python3dist(pipreqs)) == 0.4.9
 Provides:       bundled(python3dist(pip-shims)) == 0.3.2
-Provides:       bundled(python3dist(plette)) == 0.2.2
-Provides:       bundled(python3dist(pythonfinder)) == 1.1.9.post1
-Provides:       bundled(python3dist(requirementslib)) == 1.3.1.post1
+Provides:       bundled(python3dist(plette)) == 0.2.3.dev0
+Provides:       bundled(python3dist(pythonfinder)) == 1.1.10
+Provides:       bundled(python3dist(requirementslib)) == 1.3.3
 Provides:       bundled(python3dist(resolvelib)) == 0.2.2
 Provides:       bundled(python3dist(shutilwhich)) == 1.1.0
 Provides:       bundled(python3dist(tomlkit)) == 0.5.2
-Provides:       bundled(python3dist(vistir)) == 0.2.4
+Provides:       bundled(python3dist(vistir)) == 0.2.5
 Provides:       bundled(python3dist(yaspin)) == 0.14.0
 
 # The sources contains patched versions of following packages:
@@ -235,6 +235,9 @@ Documentation for Pipenv
 
 %prep
 %autosetup -p1 -n %{name}-%{version}
+
+# https://github.com/pypa/pipenv/issues/3326
+sed -i 's/2018.11.15.dev0/%{version}/' pipenv/__version__.py
 
 # Remove packages that are already packaged for Fedora from vendor directory
 # pathlib2 and backports are not needed on Python 3.6+
@@ -357,6 +360,9 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Thu Nov 29 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-1
+- Update to 2018.11.26 (bugfixes only)
+
 * Fri Nov 23 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.14-1
 - Update to 2018.11.14 (#1652091)
 - Should fix incompatibility with pip (#1651317)

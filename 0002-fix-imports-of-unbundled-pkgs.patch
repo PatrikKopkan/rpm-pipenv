@@ -12,10 +12,10 @@ index 4d137e7..1e5230b 100644
  warnings.filterwarnings("ignore", category=DependencyWarning)
  warnings.filterwarnings("ignore", category=ResourceWarning)
 diff --git a/pipenv/core.py b/pipenv/core.py
-index f815e5d..3458b72 100644
+index b9abe27..ef82011 100644
 --- a/pipenv/core.py
 +++ b/pipenv/core.py
-@@ -1260,7 +1260,7 @@ def pip_install(
+@@ -1281,7 +1281,7 @@ def pip_install(
  ):
      from pipenv.patched.notpip._internal import logger as piplogger
      from .utils import Mapping
@@ -89,10 +89,10 @@ index 352c01f..78bced8 100644
  
  ShellDetectionFailure = shellingham.ShellDetectionFailure
 diff --git a/pipenv/utils.py b/pipenv/utils.py
-index 9f62e2b..2a289cb 100644
+index 2dd5615..85e98a4 100644
 --- a/pipenv/utils.py
 +++ b/pipenv/utils.py
-@@ -390,7 +390,7 @@ class Resolver(object):
+@@ -377,7 +377,7 @@ class Resolver(object):
  
      def resolve(self):
          from pipenv.vendor.pip_shims.shims import DistributionNotFound
@@ -101,7 +101,7 @@ index 9f62e2b..2a289cb 100644
          from pipenv.patched.piptools.exceptions import NoCandidateFound
          from pipenv.patched.piptools.cache import CorruptCacheError
          from .exceptions import CacheError, ResolutionFailure
-@@ -490,7 +490,7 @@ def create_spinner(text, nospin=None, spinner_name=None):
+@@ -504,7 +504,7 @@ def create_spinner(text, nospin=None, spinner_name=None):
  def resolve(cmd, sp):
      from .vendor import delegator
      from .cmdparse import Script
@@ -110,7 +110,7 @@ index 9f62e2b..2a289cb 100644
      from .vendor.vistir.compat import to_native_string
      EOF.__module__ = "pexpect.exceptions"
      from ._compat import decode_output
-@@ -665,7 +665,7 @@ def resolve_deps(
+@@ -696,7 +696,7 @@ def resolve_deps(
      """Given a list of dependencies, return a resolved list of dependencies,
      using pip-tools -- and their hashes, using the warehouse API / pip.
      """
@@ -119,7 +119,7 @@ index 9f62e2b..2a289cb 100644
      from .vendor.requirementslib.models.requirements import Requirement
  
      index_lookup = {}
-@@ -1291,8 +1291,8 @@ def translate_markers(pipfile_entry):
+@@ -1331,8 +1331,8 @@ def translate_markers(pipfile_entry):
      """
      if not isinstance(pipfile_entry, Mapping):
          raise TypeError("Entry is not a pipfile formatted mapping.")
@@ -131,10 +131,10 @@ index 9f62e2b..2a289cb 100644
  
      allowed_marker_keys = ["markers"] + [k for k in marker_context.keys()]
 diff --git a/tests/integration/conftest.py b/tests/integration/conftest.py
-index 6ed95b3..8ac6a4d 100644
+index 822617a..768ef55 100644
 --- a/tests/integration/conftest.py
 +++ b/tests/integration/conftest.py
-@@ -1,15 +1,16 @@
+@@ -1,6 +1,8 @@
  import json
  import os
 +import requests
@@ -143,12 +143,14 @@ index 6ed95b3..8ac6a4d 100644
  import warnings
  
  import pytest
- 
- from pipenv._compat import TemporaryDirectory, Path
+@@ -9,10 +11,9 @@ from pipenv._compat import TemporaryDirectory, Path
+ from pipenv.exceptions import VirtualenvActivationException
+ from pipenv.utils import temp_environ
  from pipenv.vendor import delegator
 -from pipenv.vendor import requests
 -from pipenv.vendor import toml
- from pytest_pypi.app import prepare_packages as prepare_pypi_packages
+ from pipenv.vendor import tomlkit
+ from pytest_pypi.app import prepare_packages as prepare_pypi_packages, prepare_fixtures
 +from pytest_pypi.plugin import pypi, pypi_secure
  from vistir.compat import ResourceWarning, fs_str
  from vistir.path import mkdir_p
