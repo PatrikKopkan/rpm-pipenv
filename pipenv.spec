@@ -4,7 +4,7 @@
 
 Name:           pipenv 
 Version:        2018.11.26
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -71,8 +71,13 @@ Patch2:         0002-fix-imports-of-unbundled-pkgs.patch
 # TODO fix and propose changes upstream
 Patch3:         0003-rpmfail-pytest-marker.patch
 
+# Use the system level root certificate instead of the one bundled in certifi
+# https://bugzilla.redhat.com/show_bug.cgi?id=1655253
+Patch4:         dummy-certifi.patch
+
 BuildArch:      noarch
 
+BuildRequires:  ca-certificates
 BuildRequires:  git-core
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(flake8) >= 3.0.0
@@ -132,6 +137,8 @@ BuildRequires:  python3dist(urllib3)
 BuildRequires:  python3dist(yarg) >= 0.1.9
 
 %{?python_provide:%python_provide python3-%{name}}
+
+Requires:       ca-certificates
 
 Requires:       python3dist(virtualenv-clone)
 Requires:       python3dist(virtualenv)
@@ -238,6 +245,9 @@ Documentation for Pipenv
 
 # https://github.com/pypa/pipenv/issues/3326
 sed -i 's/2018.11.15.dev0/%{version}/' pipenv/__version__.py
+
+# this goes together with patch4
+rm pipenv/patched/notpip/_vendor/certifi/*.pem
 
 # Remove packages that are already packaged for Fedora from vendor directory
 # pathlib2 and backports are not needed on Python 3.6+
@@ -360,6 +370,9 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Wed Dec 19 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-2
+- Use the system level root certificate instead of the one bundled in certifi
+
 * Thu Nov 29 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-1
 - Update to 2018.11.26 (bugfixes only)
 
