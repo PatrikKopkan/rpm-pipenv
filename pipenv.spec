@@ -4,7 +4,7 @@
 
 Name:           pipenv 
 Version:        2018.11.26
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -370,6 +370,9 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Wed Jan  9 2019 Owen Taylor <otaylor@redhat.com> - 2018.11.26-3
+- Fix pexpect import for compatibility mode of pipenv shell
+
 * Wed Dec 19 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-2
 - Use the system level root certificate instead of the one bundled in certifi
 

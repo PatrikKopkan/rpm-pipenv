@@ -88,6 +88,15 @@ index 352c01f..78bced8 100644
  
  
  ShellDetectionFailure = shellingham.ShellDetectionFailure
+@@ -97,7 +97,7 @@ class Shell(object):
+             _handover(self.cmd, self.args + list(args))
+ 
+     def fork_compat(self, venv, cwd, args):
+-        from .vendor import pexpect
++        import pexpect
+ 
+         # Grab current terminal dimensions to replace the hardcoded default
+         # dimensions of pexpect.
 diff --git a/pipenv/utils.py b/pipenv/utils.py
 index 2dd5615..85e98a4 100644
 --- a/pipenv/utils.py
