@@ -4,7 +4,7 @@
 
 Name:           pipenv 
 Version:        2018.11.26
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -266,6 +266,14 @@ for pkg in ${UNBUNDLED[@]}; do
   fi
   rm -rf $_vendordir$pkg".LICENSE"*
   rm -rf $_vendordir${pkg/_/-}".LICENSE"*
+
+  test $pkg == backports && continue
+
+  ! grep -rE "( |pipenv\.)vendor\.$pkg" pipenv
+  if [ $? -ne 0 ]; then
+    echo 'Unbundling error:' $pkg 1>&2
+    exit 1
+  fi
 done
 
 
@@ -370,6 +378,10 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Tue Jan 22 2019 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-4
+- Fix unbundling of packaging
+- Fixes https://github.com/pypa/pipenv/issues/3469
+
 * Wed Jan  9 2019 Owen Taylor <otaylor@redhat.com> - 2018.11.26-3
 - Fix pexpect import for compatibility mode of pipenv shell
 

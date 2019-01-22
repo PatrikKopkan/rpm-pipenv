@@ -12,9 +12,18 @@ index 4d137e7..1e5230b 100644
  warnings.filterwarnings("ignore", category=DependencyWarning)
  warnings.filterwarnings("ignore", category=ResourceWarning)
 diff --git a/pipenv/core.py b/pipenv/core.py
-index b9abe27..ef82011 100644
+index b9abe27..8bfb692 100644
 --- a/pipenv/core.py
 +++ b/pipenv/core.py
+@@ -1070,7 +1070,7 @@ def do_lock(
+ 
+     # Support for --keep-outdated…
+     if keep_outdated:
+-        from pipenv.vendor.packaging.utils import canonicalize_name
++        from packaging.utils import canonicalize_name
+         for section_name, section in (
+             ("default", project.packages),
+             ("develop", project.dev_packages),
 @@ -1281,7 +1281,7 @@ def pip_install(
  ):
      from pipenv.patched.notpip._internal import logger as piplogger
