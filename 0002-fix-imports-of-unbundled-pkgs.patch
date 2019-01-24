@@ -12,7 +12,7 @@ index 4d137e7..1e5230b 100644
  warnings.filterwarnings("ignore", category=DependencyWarning)
  warnings.filterwarnings("ignore", category=ResourceWarning)
 diff --git a/pipenv/core.py b/pipenv/core.py
-index b9abe27..8bfb692 100644
+index b9abe27..cccdb0e 100644
 --- a/pipenv/core.py
 +++ b/pipenv/core.py
 @@ -1070,7 +1070,7 @@ def do_lock(
@@ -33,6 +33,24 @@ index b9abe27..8bfb692 100644
  
      src = []
      write_to_tmpfile = False
+@@ -1640,7 +1640,7 @@ def do_py(system=False):
+ def do_outdated(pypi_mirror=None):
+     # TODO: Allow --skip-lock here?
+     from .vendor.requirementslib.models.requirements import Requirement
+-    from .vendor.packaging.utils import canonicalize_name
++    from packaging.utils import canonicalize_name
+     from collections import namedtuple
+ 
+     packages = {}
+@@ -2009,7 +2009,7 @@ def do_uninstall(
+ ):
+     from .environments import PIPENV_USE_SYSTEM
+     from .vendor.requirementslib.models.requirements import Requirement
+-    from .vendor.packaging.utils import canonicalize_name
++    from packaging.utils import canonicalize_name
+ 
+     # Automatically use an activated virtualenv.
+     if PIPENV_USE_SYSTEM:
 diff --git a/pipenv/exceptions.py b/pipenv/exceptions.py
 index 62e25d5..00da817 100644
 --- a/pipenv/exceptions.py
@@ -107,7 +125,7 @@ index 352c01f..78bced8 100644
          # Grab current terminal dimensions to replace the hardcoded default
          # dimensions of pexpect.
 diff --git a/pipenv/utils.py b/pipenv/utils.py
-index 2dd5615..85e98a4 100644
+index 2dd5615..ba94166 100644
 --- a/pipenv/utils.py
 +++ b/pipenv/utils.py
 @@ -377,7 +377,7 @@ class Resolver(object):
@@ -137,6 +155,15 @@ index 2dd5615..85e98a4 100644
      from .vendor.requirementslib.models.requirements import Requirement
  
      index_lookup = {}
+@@ -1076,7 +1076,7 @@ def get_url_name(url):
+ 
+ def get_canonical_names(packages):
+     """Canonicalize a list of packages and return a set of canonical names"""
+-    from .vendor.packaging.utils import canonicalize_name
++    from packaging.utils import canonicalize_name
+ 
+     if not isinstance(packages, Sequence):
+         if not isinstance(packages, six.string_types):
 @@ -1331,8 +1331,8 @@ def translate_markers(pipfile_entry):
      """
      if not isinstance(pipfile_entry, Mapping):
