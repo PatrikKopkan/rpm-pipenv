@@ -6,6 +6,6 @@
     - classic
     tests:
     - smoke:
-        run: pipenv --three && pipenv install six
+        run: pipenv --three && pipenv install six && pipenv uninstall six
     required_packages:
     - pipenv
