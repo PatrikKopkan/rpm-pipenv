@@ -269,8 +269,7 @@ for pkg in ${UNBUNDLED[@]}; do
 
   test $pkg == backports && continue
 
-  ! grep -rE "( |\.)vendor\.$pkg" pipenv
-  if [ $? -ne 0 ]; then
+  if grep -rE "( |\.)vendor\.$pkg" pipenv; then
     echo 'Unbundling error:' $pkg 1>&2
     exit 1
   fi
