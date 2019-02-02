@@ -4,7 +4,7 @@
 
 Name:           pipenv 
 Version:        2018.11.26
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -377,6 +377,9 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2018.11.26-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Thu Jan 24 2019 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-5
 - Fix a fix of unbundling of packaging (sorry)
 
