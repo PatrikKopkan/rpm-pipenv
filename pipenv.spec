@@ -4,7 +4,7 @@
 
 Name:           pipenv 
 Version:        2018.11.26
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -139,6 +139,7 @@ BuildRequires:  python3dist(yarg) >= 0.1.9
 %{?python_provide:%python_provide python3-%{name}}
 
 Requires:       ca-certificates
+Requires:       which
 
 Requires:       python3dist(virtualenv-clone)
 Requires:       python3dist(virtualenv)
@@ -377,6 +378,9 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Wed Mar 13 2019 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-7
+- Require which (#1688145)
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2018.11.26-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
