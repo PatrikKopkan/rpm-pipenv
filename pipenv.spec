@@ -83,7 +83,6 @@ BuildRequires:  python3-devel
 BuildRequires:  python3dist(flake8) >= 3.0.0
 BuildRequires:  python3dist(flaky)
 BuildRequires:  python3dist(flask)
-BuildRequires:  python3dist(invoke)
 BuildRequires:  python3dist(mock)
 BuildRequires:  python3dist(parver)
 BuildRequires:  python3dist(pip)
@@ -275,6 +274,13 @@ for pkg in ${UNBUNDLED[@]}; do
     exit 1
   fi
 done
+
+# Remove setup_requires, as we cannot install invoke
+sed -i /setup_requires/d setup.py
+
+# Hotfix for pytest 4
+# https://github.com/pypa/pipenv/pull/3724
+sed -i 's/get_marker/get_closest_marker/g' tests/integration/conftest.py
 
 
 %build
