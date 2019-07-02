@@ -250,8 +250,23 @@ sed -i 's/2018.11.15.dev0/%{version}/' pipenv/__version__.py
 rm pipenv/patched/notpip/_vendor/certifi/*.pem
 
 # Remove packages that are already packaged for Fedora from vendor directory
-# pathlib2 and backports are not needed on Python 3.6+
+# pathlib2 and backports are not needed on Python 3.6+                                                                                                                                                                                                                                        #| new ones                                                                           #|patched
 UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports"
+#todo: add these there yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims pep517 crayons
+
+## there for scripts from tasks directory
+#NOT_NEEDED="shutilwhich passa"
+
+#issue:
+# -from pipenv.vendor import delegator, requests, toml, tomlkit
+# +import delegator, requests, toml, tomlkit
+
+for pkg in ${UNBUNDLED[@]}; do
+  find pipenv/* tests/* -not -path '*/\.git*' -type f -exec sed -i -E \
+  -e "s/from (pipenv)?\.vendor\.$pkg(\.[a-z,A-Z,\.,_]*)? import/from $pkg\2 import/g" \
+  -e "s/^import (pipenv)?\.vendor\.$pkg(\.[a-z,A-Z,\.,_]*)?/import $pkg\2/g" \
+  -e "s/from (pipenv)?\.vendor import $pkg(\.[a-z,A-Z,\.,_]*)?/import $pkg\2/g" {} \;
+done
 
 _vendordir="pipenv/vendor/"
 
