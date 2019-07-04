@@ -251,8 +251,8 @@ rm pipenv/patched/notpip/_vendor/certifi/*.pem
 
 # Remove packages that are already packaged for Fedora from vendor directory
 # pathlib2 and backports are not needed on Python 3.6+                                                                                                                                                                                                                                        #| new ones                                                                           #|patched
-UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports"
-#todo: add these there yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims pep517 crayons
+UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims pep517 crayons"
+# new added add these there yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims pep517 crayons
 
 ## there for scripts from tasks directory
 #NOT_NEEDED="shutilwhich passa"
