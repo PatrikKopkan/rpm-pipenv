@@ -80,7 +80,7 @@ BuildArch:      noarch
 BuildRequires:  ca-certificates
 BuildRequires:  git-core
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(flake8) >= 3.0.0
+BuildRequires:  python3dist(flake8) >= 3
 BuildRequires:  python3dist(flaky)
 BuildRequires:  python3dist(flask)
 BuildRequires:  python3dist(mock)
@@ -111,7 +111,7 @@ BuildRequires:  python3dist(cached-property) >= 1.3
 BuildRequires:  python3dist(cerberus) >= 1.2
 BuildRequires:  python3dist(certifi)
 BuildRequires:  python3dist(click-completion)
-BuildRequires:  python3dist(click) >= 7.0
+BuildRequires:  python3dist(click) >= 7
 BuildRequires:  python3dist(colorama) >= 0.3.9
 BuildRequires:  python3dist(distlib) >= 0.2.7
 BuildRequires:  python3dist(docopt) >= 0.6.2
@@ -119,7 +119,7 @@ BuildRequires:  python3dist(first) >= 2.0.1
 BuildRequires:  python3dist(chardet) >= 2.0.1
 BuildRequires:  python3dist(iso8601) >= 0.1.11
 BuildRequires:  python3dist(jinja2) >= 2.10
-BuildRequires:  python3dist(markupsafe) >= 1.0
+BuildRequires:  python3dist(markupsafe) >= 1
 BuildRequires:  python3dist(packaging) >= 17.1
 BuildRequires:  python3dist(parse) >= 1.8.4
 BuildRequires:  python3dist(pexpect) >= 4.6
@@ -131,7 +131,7 @@ BuildRequires:  python3dist(scandir) >= 1.9
 BuildRequires:  python3dist(semver) >= 2.8.1
 BuildRequires:  python3dist(shellingham) >= 1.2.7
 BuildRequires:  python3dist(six)
-BuildRequires:  python3dist(toml) >= 0.10.0
+BuildRequires:  python3dist(toml) >= 0.10
 BuildRequires:  python3dist(urllib3)
 BuildRequires:  python3dist(yarg) >= 0.1.9
 
@@ -151,7 +151,7 @@ Requires:       python3dist(cached-property) >= 1.3
 Requires:       python3dist(cerberus) >= 1.2
 Requires:       python3dist(certifi)
 Requires:       python3dist(click-completion)
-Requires:       python3dist(click) >= 7.0
+Requires:       python3dist(click) >= 7
 Requires:       python3dist(colorama) >= 0.3.9
 Requires:       python3dist(distlib) >= 0.2.7
 Requires:       python3dist(docopt) >= 0.6.2
@@ -159,7 +159,7 @@ Requires:       python3dist(first) >= 2.0.1
 Requires:       python3dist(chardet) >= 2.0.1
 Requires:       python3dist(iso8601) >= 0.1.11
 Requires:       python3dist(jinja2) >= 2.10
-Requires:       python3dist(markupsafe) >= 1.0
+Requires:       python3dist(markupsafe) >= 1
 Requires:       python3dist(packaging) >= 17.1
 Requires:       python3dist(parse) >= 1.8.4
 Requires:       python3dist(pexpect) >= 4.6
@@ -171,7 +171,7 @@ Requires:       python3dist(scandir) >= 1.9
 Requires:       python3dist(semver) >= 2.8.1
 Requires:       python3dist(shellingham) >= 1.2.7
 Requires:       python3dist(six)
-Requires:       python3dist(toml) >= 0.10.0
+Requires:       python3dist(toml) >= 0.10
 Requires:       python3dist(urllib3)
 Requires:       python3dist(yarg) >= 0.1.9
 
@@ -179,41 +179,41 @@ Requires:       python3dist(yarg) >= 0.1.9
 # packaged for Fedora yet.
 # TODO package for Fedora and unbundle
 Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
-Provides:       bundled(python3dist(cursor)) == 1.2.0
+Provides:       bundled(python3dist(cursor)) == 1.2
 Provides:       bundled(python3dist(delegator.py)) == 0.1.1
 Provides:       bundled(python3dist(passa))
-Provides:       bundled(python3dist(pipdeptree)) == 0.13.0
+Provides:       bundled(python3dist(pipdeptree)) == 0.13
 Provides:       bundled(python3dist(pipreqs)) == 0.4.9
 Provides:       bundled(python3dist(pip-shims)) == 0.3.2
 Provides:       bundled(python3dist(plette)) == 0.2.3.dev0
 Provides:       bundled(python3dist(pythonfinder)) == 1.1.10
 Provides:       bundled(python3dist(requirementslib)) == 1.3.3
 Provides:       bundled(python3dist(resolvelib)) == 0.2.2
-Provides:       bundled(python3dist(shutilwhich)) == 1.1.0
+Provides:       bundled(python3dist(shutilwhich)) == 1.1
 Provides:       bundled(python3dist(tomlkit)) == 0.5.2
 Provides:       bundled(python3dist(vistir)) == 0.2.5
-Provides:       bundled(python3dist(yaspin)) == 0.14.0
+Provides:       bundled(python3dist(yaspin)) == 0.14
 
 # The sources contains patched versions of following packages:
 Provides:       bundled(python3dist(crayons)) == 0.1.2
 Provides:       bundled(python3dist(pipfile)) == 0.0.2
-Provides:       bundled(python3dist(pip-tools)) == 3.1.0
+Provides:       bundled(python3dist(pip-tools)) == 3.1
 Provides:       bundled(python3dist(pip)) == 18.1
 Provides:       bundled(python3dist(safety))
 
 # The packages bundled with pip (18.1):
 Provides:       bundled(python3dist(appdirs)) = 1.4.3
 Provides:       bundled(python3dist(distlib)) = 0.2.7
-Provides:       bundled(python3dist(distro)) = 1.3.0
+Provides:       bundled(python3dist(distro)) = 1.3
 Provides:       bundled(python3dist(html5lib)) = 1.0.1
-Provides:       bundled(python3dist(six)) = 1.11.0
+Provides:       bundled(python3dist(six)) = 1.11
 Provides:       bundled(python3dist(colorama)) = 0.3.9
 Provides:       bundled(python3dist(CacheControl)) = 0.12.5
 Provides:       bundled(python3dist(msgpack-python)) = 0.5.6
 Provides:       bundled(python3dist(lockfile)) = 0.12.2
 Provides:       bundled(python3dist(progress)) = 1.4
 Provides:       bundled(python3dist(ipaddress)) = 1.0.22
-Provides:       bundled(python3dist(packaging)) = 18.0
+Provides:       bundled(python3dist(packaging)) = 18
 Provides:       bundled(python3dist(pep517)) = 0.2
 Provides:       bundled(python3dist(pyparsing)) = 2.2.1
 Provides:       bundled(python3dist(pytoml)) = 0.1.19
