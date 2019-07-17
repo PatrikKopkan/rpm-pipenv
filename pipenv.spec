@@ -4,10 +4,14 @@
 
 Name:           pipenv 
 Version:        2018.11.26
+<<<<<<< HEAD
 Release:        9%{?dist}
+=======
+Release:        8%{?dist}
+>>>>>>> test seems passing
 Summary:        The higher level Python packaging tool
 
-# Pipenv source code is MIT, there are bundled packages having different licenses
+# Pipenv source code iBuildRequires:  packages having different licenses
 
 # pipenv/patched/crayons.py is MIT
 # pipenv/patched/pipfile/ is (ASL 2.0 or BSD)
@@ -71,7 +75,7 @@ Patch2:         0002-fix-imports-of-unbundled-pkgs.patch
 # TODO fix and propose changes upstream
 Patch3:         0003-rpmfail-pytest-marker.patch
 
-# Use the system level root certificate instead of the one bundled in certifi
+# Use the system level root certificate inBuildRequires:  in certifi
 # https://bugzilla.redhat.com/show_bug.cgi?id=1655253
 Patch4:         dummy-certifi.patch
 
@@ -134,6 +138,24 @@ BuildRequires:  python3dist(six)
 BuildRequires:  python3dist(toml) >= 0.10
 BuildRequires:  python3dist(urllib3)
 BuildRequires:  python3dist(yarg) >= 0.1.9
+BuildRequires:  python3dist(yaspin)
+BuildRequires:  python3dist(vistir)
+BuildRequires:  python3dist(tomlkit)
+
+#BuildRequires:  python3dist(click-didyoumean)) == 0.0.3
+#BuildRequires:  python3dist(cursor)) == 1.2.0
+#BuildRequires:  python3dist(delegator.py)) == 0.1.1
+#BuildRequires:  python3dist(passa)) not needed for builulfal;
+BuildRequires:  python3-pipdeptree
+BuildRequires:  python3-pipreqs
+BuildRequires:  python3-pip-shims
+BuildRequires:  python3-plette
+BuildRequires:  python3-pythonfinder
+BuildRequires:  python3-requirementslib
+#BuildRequires:  python3dist(resolvelib)) == 0.2.2 not 
+#BuildRequires:  python3dist(shutilwhich)) == 1.1.0 not needed
+BuildRequires:  python3-tomlkit
+BuildRequires:  python3-vistir
 
 %{?python_provide:%python_provide python3-%{name}}
 
@@ -174,25 +196,26 @@ Requires:       python3dist(six)
 Requires:       python3dist(toml) >= 0.10
 Requires:       python3dist(urllib3)
 Requires:       python3dist(yarg) >= 0.1.9
+Requires:       python3dist(yaspin)
 
-# Following packages bundled under vendor directory are not
+# FoBuildRequires:  under vendor directory are not
 # packaged for Fedora yet.
 # TODO package for Fedora and unbundle
-Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
-Provides:       bundled(python3dist(cursor)) == 1.2
-Provides:       bundled(python3dist(delegator.py)) == 0.1.1
-Provides:       bundled(python3dist(passa))
-Provides:       bundled(python3dist(pipdeptree)) == 0.13
-Provides:       bundled(python3dist(pipreqs)) == 0.4.9
-Provides:       bundled(python3dist(pip-shims)) == 0.3.2
-Provides:       bundled(python3dist(plette)) == 0.2.3.dev0
-Provides:       bundled(python3dist(pythonfinder)) == 1.1.10
-Provides:       bundled(python3dist(requirementslib)) == 1.3.3
-Provides:       bundled(python3dist(resolvelib)) == 0.2.2
-Provides:       bundled(python3dist(shutilwhich)) == 1.1
-Provides:       bundled(python3dist(tomlkit)) == 0.5.2
-Provides:       bundled(python3dist(vistir)) == 0.2.5
-Provides:       bundled(python3dist(yaspin)) == 0.14
+# Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
+# Provides:       bundled(python3dist(cursor)) == 1.2.0
+# Provides:       bundled(python3dist(delegator.py)) == 0.1.1
+# Provides:       bundled(python3dist(passa))
+# Provides:       bundled(python3dist(pipdeptree)) == 0.13.0
+# Provides:       bundled(python3dist(pipreqs)) == 0.4.9
+# Provides:       bundled(python3dist(pip-shims)) == 0.3.2
+# Provides:       bundled(python3dist(plette)) == 0.2.3.dev0
+# Provides:       bundled(python3dist(pythonfinder)) == 1.1.10
+# Provides:       bundled(python3dist(requirementslib)) == 1.3.3
+# Provides:       bundled(python3dist(resolvelib)) == 0.2.2
+# Provides:       bundled(python3dist(shutilwhich)) == 1.1.0
+# Provides:       bundled(python3dist(tomlkit)) == 0.5.2
+# Provides:       bundled(python3dist(vistir)) == 0.2.5
+# Provides:       bundled(python3dist(yaspin)) == 0.14.0
 
 # The sources contains patched versions of following packages:
 Provides:       bundled(python3dist(crayons)) == 0.1.2
@@ -251,9 +274,10 @@ rm pipenv/patched/notpip/_vendor/certifi/*.pem
 
 # Remove packages that are already packaged for Fedora from vendor directory
 # pathlib2 and backports are not needed on Python 3.6+                                                                                                                                                                                                                                        #| new ones                                                                           #|patched
-UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims pep517 crayons"
-# new added add these there yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims pep517 crayons
-
+UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims"
+# new added add these there yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims
+# patched: crayons
+# Not in pipenv at this release: pep517
 ## there for scripts from tasks directory
 #NOT_NEEDED="shutilwhich passa"
 
@@ -386,7 +410,6 @@ rm -rf check_pythonpath check_path
 %license %{python3_sitelib}/%{name}/vendor/shutilwhich/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/tomlkit/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/vistir/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/yaspin/LICENSE
 
 %doc README.md NOTICES CHANGELOG.rst HISTORY.txt
 %{_bindir}/pipenv
@@ -399,6 +422,9 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Mon Aug 19 2019 Patrik Kopkan <pkopkan@redhat.com> - 2018.11.26-9
+- Dynamic fixing of imports when devendoring
+- Devendored: yaspin, vistir, requirementslib, pythonfinder, plette pipreqs, pipdeptree, pip_shims
 * Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-9
 - Rebuilt for Python 3.8
 
@@ -422,7 +448,7 @@ rm -rf check_pythonpath check_path
 - Fix pexpect import for compatibility mode of pipenv shell
 
 * Wed Dec 19 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-2
-- Use the system level root certificate instead of the one bundled in certifi
+- Use the system level root certificate inBuildRequires:  in certifi
 
 * Thu Nov 29 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-1
 - Update to 2018.11.26 (bugfixes only)
@@ -432,7 +458,7 @@ rm -rf check_pythonpath check_path
 - Should fix incompatibility with pip (#1651317)
 
 * Wed Aug 01 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.7.1-2
-- Correct the name of bundled dotenv to python-dotenv
+- CorBuildRequires:  dotenv to python-dotenv
 
 * Fri Jul 27 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.7.1-1
 - Update to 2018.7.1 (#1609432)
@@ -445,7 +471,7 @@ rm -rf check_pythonpath check_path
 
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 11.10.4-2
 - Rebuilt for Python 3.7
-- Add patch for patched/bundled prettytoml to work with 3.7
+- Add pBuildRequires:  prettytoml to work with 3.7
 
 * Fri Apr 13 2018 Michal Cyprian <mcyprian@redhat.com> - 11.10.4-1
 - Initial package.
