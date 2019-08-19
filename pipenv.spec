@@ -141,21 +141,15 @@ BuildRequires:  python3dist(yarg) >= 0.1.9
 BuildRequires:  python3dist(yaspin)
 BuildRequires:  python3dist(vistir)
 BuildRequires:  python3dist(tomlkit)
-
-#BuildRequires:  python3dist(click-didyoumean)) == 0.0.3
-#BuildRequires:  python3dist(cursor)) == 1.2.0
-#BuildRequires:  python3dist(delegator.py)) == 0.1.1
-#BuildRequires:  python3dist(passa)) not needed for builulfal;
 BuildRequires:  python3-pipdeptree
 BuildRequires:  python3-pipreqs
 BuildRequires:  python3-pip-shims
 BuildRequires:  python3-plette
 BuildRequires:  python3-pythonfinder
-BuildRequires:  python3-requirementslib
-#BuildRequires:  python3dist(resolvelib)) == 0.2.2 not 
-#BuildRequires:  python3dist(shutilwhich)) == 1.1.0 not needed
 BuildRequires:  python3-tomlkit
 BuildRequires:  python3-vistir
+#BuildRequires:  python3dist(resolvelib)) == 0.2.2 not 
+#BuildRequires:  python3dist(shutilwhich)) == 1.1.0 not needed
 
 %{?python_provide:%python_provide python3-%{name}}
 
@@ -197,25 +191,27 @@ Requires:       python3dist(toml) >= 0.10
 Requires:       python3dist(urllib3)
 Requires:       python3dist(yarg) >= 0.1.9
 Requires:       python3dist(yaspin)
+Requires:       python3dist(vistir)
+Requires:       python3dist(tomlkit)
+Requires:       python3-pipdeptree
+Requires:       python3-pipreqs
+Requires:       python3-pip-shims
+Requires:       python3-plette
+Requires:       python3-pythonfinder
+Requires:       python3-tomlkit
+Requires:       python3-vistir
 
 # FoBuildRequires:  under vendor directory are not
 # packaged for Fedora yet.
 # TODO package for Fedora and unbundle
-# Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
-# Provides:       bundled(python3dist(cursor)) == 1.2.0
-# Provides:       bundled(python3dist(delegator.py)) == 0.1.1
-# Provides:       bundled(python3dist(passa))
-# Provides:       bundled(python3dist(pipdeptree)) == 0.13.0
-# Provides:       bundled(python3dist(pipreqs)) == 0.4.9
-# Provides:       bundled(python3dist(pip-shims)) == 0.3.2
-# Provides:       bundled(python3dist(plette)) == 0.2.3.dev0
-# Provides:       bundled(python3dist(pythonfinder)) == 1.1.10
-# Provides:       bundled(python3dist(requirementslib)) == 1.3.3
-# Provides:       bundled(python3dist(resolvelib)) == 0.2.2
-# Provides:       bundled(python3dist(shutilwhich)) == 1.1.0
-# Provides:       bundled(python3dist(tomlkit)) == 0.5.2
-# Provides:       bundled(python3dist(vistir)) == 0.2.5
-# Provides:       bundled(python3dist(yaspin)) == 0.14.0
+Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
+Provides:       bundled(python3dist(cursor)) == 1.2
+Provides:       bundled(python3dist(delegator.py)) == 0.1.1
+Provides:       bundled(python3dist(passa))
+Provides:       bundled(python3dist(requirementslib)) == 1.3.3
+Provides:       bundled(python3dist(resolvelib)) == 0.2.2
+Provides:       bundled(python3dist(shutilwhich)) == 1.1
+Provides:       bundled(python3dist(tomlkit)) == 0.5.2
 
 # The sources contains patched versions of following packages:
 Provides:       bundled(python3dist(crayons)) == 0.1.2
@@ -273,13 +269,8 @@ sed -i 's/2018.11.15.dev0/%{version}/' pipenv/__version__.py
 rm pipenv/patched/notpip/_vendor/certifi/*.pem
 
 # Remove packages that are already packaged for Fedora from vendor directory
-# pathlib2 and backports are not needed on Python 3.6+                                                                                                                                                                                                                                        #| new ones                                                                           #|patched
-UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims"
-# new added add these there yaspin vistir requirementslib pythonfinder plette pipreqs pipdeptree pip_shims
-# patched: crayons
-# Not in pipenv at this release: pep517
-## there for scripts from tasks directory
-#NOT_NEEDED="shutilwhich passa"
+# pathlib2 and backports are not needed on Python 3.6+
+UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir pythonfinder plette pipreqs pipdeptree pip_shims"
 
 #issue:
 # -from pipenv.vendor import delegator, requests, toml, tomlkit
@@ -401,15 +392,10 @@ rm -rf check_pythonpath check_path
 %license %{python3_sitelib}/%{name}/vendor/click_didyoumean/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/cursor/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/passa/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/pipreqs/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/pip_shims/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/plette/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/pythonfinder/LICENSE.txt
 %license %{python3_sitelib}/%{name}/vendor/requirementslib/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/resolvelib/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/shutilwhich/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/tomlkit/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/vistir/LICENSE
 
 %doc README.md NOTICES CHANGELOG.rst HISTORY.txt
 %{_bindir}/pipenv
