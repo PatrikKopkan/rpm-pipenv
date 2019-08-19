@@ -49,16 +49,10 @@ Summary:        The higher level Python packaging tool
 # pipenv/vendor/delegator.py is MIT
 # pipenv/vendor/passa is ISC
 # pipenv/vendor/pipdeptree.py is MIT
-# pipenv/vendor/pipreqs/ is Apache2.0
-# pipenv/vendor/pip_shims/ is ISC
-# pipenv/vendor/plette/ is ISC
-# pipenv/vendor/pythonfinder/ is MIT
 # pipenv/vendor/requirementslib/ is (Apache2.0 or BSD)
 # pipenv/vendor/resolvelib/ is MIT
 # pipenv/vendor/shutilwhich/ is BSD
 # pipenv/vendor/tomlkit/ is MIT
-# pipenv/vendor/vistir/ is ISC
-# pipenv/vendor/yaspin/ is MIT
 
 License:        MIT and BSD and ASL 2.0 and LGPLv2+ and Python and ISC and MPLv2.0 and (ASL 2.0 or BSD) and CC-BY-SA
 URL:            https://github.com/pypa/pipenv
@@ -140,16 +134,12 @@ BuildRequires:  python3dist(urllib3)
 BuildRequires:  python3dist(yarg) >= 0.1.9
 BuildRequires:  python3dist(yaspin)
 BuildRequires:  python3dist(vistir)
+BuildRequires:  python3dist(pipdeptree)
+BuildRequires:  python3dist(pipreqs)
+BuildRequires:  python3dist(pip-shims)
+BuildRequires:  python3dist(plette)
+BuildRequires:  python3dist(pythonfinder)
 BuildRequires:  python3dist(tomlkit)
-BuildRequires:  python3-pipdeptree
-BuildRequires:  python3-pipreqs
-BuildRequires:  python3-pip-shims
-BuildRequires:  python3-plette
-BuildRequires:  python3-pythonfinder
-BuildRequires:  python3-tomlkit
-BuildRequires:  python3-vistir
-#BuildRequires:  python3dist(resolvelib)) == 0.2.2 not 
-#BuildRequires:  python3dist(shutilwhich)) == 1.1.0 not needed
 
 %{?python_provide:%python_provide python3-%{name}}
 
@@ -192,16 +182,15 @@ Requires:       python3dist(urllib3)
 Requires:       python3dist(yarg) >= 0.1.9
 Requires:       python3dist(yaspin)
 Requires:       python3dist(vistir)
-Requires:       python3dist(tomlkit)
-Requires:       python3-pipdeptree
-Requires:       python3-pipreqs
-Requires:       python3-pip-shims
-Requires:       python3-plette
-Requires:       python3-pythonfinder
-Requires:       python3-tomlkit
-Requires:       python3-vistir
+Requires:       python3dist(tomlkit) == 1.5.2
+Requires:       python3dist(pipdeptree)
+Requires:       python3dist(pipreqs)
+Requires:       python3dist(pip-shims)
+Requires:       python3dist(plette)
+Requires:       python3dist(pythonfinder)
+Requires:       python3dist(vistir)
 
-# FoBuildRequires:  under vendor directory are not
+# For BuildRequires:  under vendor directory are not
 # packaged for Fedora yet.
 # TODO package for Fedora and unbundle
 Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
@@ -211,7 +200,7 @@ Provides:       bundled(python3dist(passa))
 Provides:       bundled(python3dist(requirementslib)) == 1.3.3
 Provides:       bundled(python3dist(resolvelib)) == 0.2.2
 Provides:       bundled(python3dist(shutilwhich)) == 1.1
-Provides:       bundled(python3dist(tomlkit)) == 0.5.2
+# Provides:       bundled(python3dist(tomlkit)) == 0.5.2
 
 # The sources contains patched versions of following packages:
 Provides:       bundled(python3dist(crayons)) == 0.1.2
@@ -270,7 +259,7 @@ rm pipenv/patched/notpip/_vendor/certifi/*.pem
 
 # Remove packages that are already packaged for Fedora from vendor directory
 # pathlib2 and backports are not needed on Python 3.6+
-UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir pythonfinder plette pipreqs pipdeptree pip_shims"
+UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir pythonfinder plette pipreqs pipdeptree pip_shims tomlkit"
 
 #issue:
 # -from pipenv.vendor import delegator, requests, toml, tomlkit
@@ -411,6 +400,7 @@ rm -rf check_pythonpath check_path
 * Mon Aug 19 2019 Patrik Kopkan <pkopkan@redhat.com> - 2018.11.26-9
 - Dynamic fixing of imports when devendoring
 - Devendored: yaspin, vistir, requirementslib, pythonfinder, plette pipreqs, pipdeptree, pip_shims
+
 * Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-9
 - Rebuilt for Python 3.8
 
