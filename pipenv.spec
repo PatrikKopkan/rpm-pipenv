@@ -4,14 +4,10 @@
 
 Name:           pipenv 
 Version:        2018.11.26
-<<<<<<< HEAD
 Release:        9%{?dist}
-=======
-Release:        8%{?dist}
->>>>>>> test seems passing
 Summary:        The higher level Python packaging tool
 
-# Pipenv source code iBuildRequires:  packages having different licenses
+# Pipenv source code BuildRequires:  packages having different licenses
 
 # pipenv/patched/crayons.py is MIT
 # pipenv/patched/pipfile/ is (ASL 2.0 or BSD)
@@ -52,7 +48,6 @@ Summary:        The higher level Python packaging tool
 # pipenv/vendor/requirementslib/ is (Apache2.0 or BSD)
 # pipenv/vendor/resolvelib/ is MIT
 # pipenv/vendor/shutilwhich/ is BSD
-# pipenv/vendor/tomlkit/ is MIT
 
 License:        MIT and BSD and ASL 2.0 and LGPLv2+ and Python and ISC and MPLv2.0 and (ASL 2.0 or BSD) and CC-BY-SA
 URL:            https://github.com/pypa/pipenv
@@ -182,7 +177,7 @@ Requires:       python3dist(urllib3)
 Requires:       python3dist(yarg) >= 0.1.9
 Requires:       python3dist(yaspin)
 Requires:       python3dist(vistir)
-Requires:       python3dist(tomlkit) == 1.5.2
+Requires:       python3dist(tomlkit)
 Requires:       python3dist(pipdeptree)
 Requires:       python3dist(pipreqs)
 Requires:       python3dist(pip-shims)
@@ -200,7 +195,6 @@ Provides:       bundled(python3dist(passa))
 Provides:       bundled(python3dist(requirementslib)) == 1.3.3
 Provides:       bundled(python3dist(resolvelib)) == 0.2.2
 Provides:       bundled(python3dist(shutilwhich)) == 1.1
-# Provides:       bundled(python3dist(tomlkit)) == 0.5.2
 
 # The sources contains patched versions of following packages:
 Provides:       bundled(python3dist(crayons)) == 0.1.2
@@ -269,7 +263,8 @@ for pkg in ${UNBUNDLED[@]}; do
   find pipenv/* tests/* -not -path '*/\.git*' -type f -exec sed -i -E \
   -e "s/from (pipenv)?\.vendor\.$pkg(\.[a-z,A-Z,\.,_]*)? import/from $pkg\2 import/g" \
   -e "s/^import (pipenv)?\.vendor\.$pkg(\.[a-z,A-Z,\.,_]*)?/import $pkg\2/g" \
-  -e "s/from (pipenv)?\.vendor import $pkg(\.[a-z,A-Z,\.,_]*)?/import $pkg\2/g" {} \;
+  -e "s/from (pipenv)?\.vendor import $pkg(\.\S+)?/import $pkg\2/g" \
+  -e "s/(pipenv)?\.vendor\.$pkg(\.\S+)?/$pkg\2/g" {} \;
 done
 
 _vendordir="pipenv/vendor/"
@@ -384,7 +379,6 @@ rm -rf check_pythonpath check_path
 %license %{python3_sitelib}/%{name}/vendor/requirementslib/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/resolvelib/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/shutilwhich/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/tomlkit/LICENSE
 
 %doc README.md NOTICES CHANGELOG.rst HISTORY.txt
 %{_bindir}/pipenv
@@ -399,7 +393,7 @@ rm -rf check_pythonpath check_path
 %changelog
 * Mon Aug 19 2019 Patrik Kopkan <pkopkan@redhat.com> - 2018.11.26-9
 - Dynamic fixing of imports when devendoring
-- Devendored: yaspin, vistir, requirementslib, pythonfinder, plette pipreqs, pipdeptree, pip_shims
+- Devendored: yaspin vistir pythonfinder plette pipreqs pipdeptree pip_shims tomlkit
 
 * Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-9
 - Rebuilt for Python 3.8
@@ -424,7 +418,7 @@ rm -rf check_pythonpath check_path
 - Fix pexpect import for compatibility mode of pipenv shell
 
 * Wed Dec 19 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-2
-- Use the system level root certificate inBuildRequires:  in certifi
+- Use the system level root certificate instead of the one bundled in certifi
 
 * Thu Nov 29 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-1
 - Update to 2018.11.26 (bugfixes only)
@@ -434,7 +428,7 @@ rm -rf check_pythonpath check_path
 - Should fix incompatibility with pip (#1651317)
 
 * Wed Aug 01 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.7.1-2
-- CorBuildRequires:  dotenv to python-dotenv
+- Correct the name of bundled dotenv to python-dotenv
 
 * Fri Jul 27 2018 Miro Hrončok <mhroncok@redhat.com> - 2018.7.1-1
 - Update to 2018.7.1 (#1609432)
@@ -447,7 +441,7 @@ rm -rf check_pythonpath check_path
 
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 11.10.4-2
 - Rebuilt for Python 3.7
-- Add pBuildRequires:  prettytoml to work with 3.7
+- Add patch for patched/bundled prettytoml to work with 3.7
 
 * Fri Apr 13 2018 Michal Cyprian <mcyprian@redhat.com> - 11.10.4-1
 - Initial package.
