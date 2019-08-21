@@ -7,7 +7,7 @@ Version:        2018.11.26
 Release:        9%{?dist}
 Summary:        The higher level Python packaging tool
 
-# Pipenv source code BuildRequires:  packages having different licenses
+# Pipenv source code is MIT, there are bundled packages having different licenses
 
 # pipenv/patched/crayons.py is MIT
 # pipenv/patched/pipfile/ is (ASL 2.0 or BSD)
@@ -44,7 +44,6 @@ Summary:        The higher level Python packaging tool
 # pipenv/vendor/cursor is CC-BY-SA
 # pipenv/vendor/delegator.py is MIT
 # pipenv/vendor/passa is ISC
-# pipenv/vendor/pipdeptree.py is MIT
 # pipenv/vendor/requirementslib/ is (Apache2.0 or BSD)
 # pipenv/vendor/resolvelib/ is MIT
 # pipenv/vendor/shutilwhich/ is BSD
@@ -64,7 +63,7 @@ Patch2:         0002-fix-imports-of-unbundled-pkgs.patch
 # TODO fix and propose changes upstream
 Patch3:         0003-rpmfail-pytest-marker.patch
 
-# Use the system level root certificate inBuildRequires:  in certifi
+# Use the system level root certificate instead of the one bundled in certifi
 # https://bugzilla.redhat.com/show_bug.cgi?id=1655253
 Patch4:         dummy-certifi.patch
 
@@ -185,15 +184,23 @@ Requires:       python3dist(plette)
 Requires:       python3dist(pythonfinder)
 Requires:       python3dist(vistir)
 
-# For BuildRequires:  under vendor directory are not
+# Following packages bundled under vendor directory are not
 # packaged for Fedora yet.
 # TODO package for Fedora and unbundle
 Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
+# changed license to gpl
 Provides:       bundled(python3dist(cursor)) == 1.2
+# todo
 Provides:       bundled(python3dist(delegator.py)) == 0.1.1
+# didn't manage package dependency(requirementslib)
 Provides:       bundled(python3dist(passa))
+# this library use pip.internals. Some changes in init methods happened there
+# So version 1.3.3 package is useless with pip 19+ and newer versions will break pipenv
+# because pipenv has bundled patched pip
 Provides:       bundled(python3dist(requirementslib)) == 1.3.3
+# dependency of passa
 Provides:       bundled(python3dist(resolvelib)) == 0.2.2
+# not used in upstream master branch
 Provides:       bundled(python3dist(shutilwhich)) == 1.1
 
 # The sources contains patched versions of following packages:
@@ -255,9 +262,13 @@ rm pipenv/patched/notpip/_vendor/certifi/*.pem
 # pathlib2 and backports are not needed on Python 3.6+
 UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir pythonfinder plette pipreqs pipdeptree pip_shims tomlkit"
 
-#issue:
-# -from pipenv.vendor import delegator, requests, toml, tomlkit
-# +import delegator, requests, toml, tomlkit
+# issue: for loop below doesn't handle multiple imports in one line
+# properly. There might be case when library is still not unbundled
+# but is not imported from vendor directory.
+# diff of pyenv.py:
+#  265   │ -from .vendor import attr, delegator
+#  266   │ +import attr, delegator
+# This so far only one case so I patched this case.
 
 for pkg in ${UNBUNDLED[@]}; do
   find pipenv/* tests/* -not -path '*/\.git*' -type f -exec sed -i -E \
