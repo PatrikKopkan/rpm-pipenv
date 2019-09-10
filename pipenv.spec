@@ -52,9 +52,7 @@ License:        MIT and BSD and ASL 2.0 and LGPLv2+ and Python and ISC and MPLv2
 URL:            https://github.com/pypa/pipenv
 Source0:        https://github.com/pypa/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
-# We unbundle a plenty of packages from vendor directory
-# 'from pipenv.vendor' imports must be corrected
-# Also adds "pytest_pypi.plugin import pypi, ..." to conftest,
+# adds "pytest_pypi.plugin import pypi, ..." to conftest,
 # as we don't have that plugin installed and it is not autodiscovered
 Patch2:         0002-fix-imports-of-unbundled-pkgs.patch
 
@@ -188,9 +186,8 @@ Requires:       python3dist(vistir)
 # packaged for Fedora yet.
 # TODO package for Fedora and unbundle
 Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
-# changed license to gpl
+# not used in upstream master branch
 Provides:       bundled(python3dist(cursor)) == 1.2
-# todo
 Provides:       bundled(python3dist(delegator.py)) == 0.1.1
 # didn't manage package dependency(requirementslib)
 Provides:       bundled(python3dist(passa))
@@ -268,7 +265,7 @@ UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion clic
 # diff of pyenv.py:
 #  265   │ -from .vendor import attr, delegator
 #  266   │ +import attr, delegator
-# This so far only one case so I patched this case.
+# This so far only one case. This is patched out in 0002 patch in pipenv 2018.11.26
 
 for pkg in ${UNBUNDLED[@]}; do
   find pipenv/* tests/* -not -path '*/\.git*' -type f -exec sed -i -E \
