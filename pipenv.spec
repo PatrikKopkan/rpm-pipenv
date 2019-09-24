@@ -52,9 +52,9 @@ License:        MIT and BSD and ASL 2.0 and LGPLv2+ and Python and ISC and MPLv2
 URL:            https://github.com/pypa/pipenv
 Source0:        https://github.com/pypa/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
-# adds "pytest_pypi.plugin import pypi, ..." to conftest,
+# Adds "pytest_pypi.plugin import pypi, ..." to conftest,
 # as we don't have that plugin installed and it is not autodiscovered
-Patch2:         0002-fix-imports-of-unbundled-pkgs.patch
+Patch2:         0002-import-pytest-pypi.patch
 
 # A couple of tests fails in the mock environment, add option
 # to skip these using special pytest marker
@@ -186,18 +186,18 @@ Requires:       python3dist(vistir)
 # packaged for Fedora yet.
 # TODO package for Fedora and unbundle
 Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
-# not used in upstream master branch
+# No longer used in upstream master branch, not worth looking into
 Provides:       bundled(python3dist(cursor)) == 1.2
 Provides:       bundled(python3dist(delegator.py)) == 0.1.1
-# didn't manage package dependency(requirementslib)
+# Needs requirementslib (see below)
 Provides:       bundled(python3dist(passa))
-# this library use pip.internals. Some changes in init methods happened there
-# So version 1.3.3 package is useless with pip 19+ and newer versions will break pipenv
-# because pipenv has bundled patched pip
+# This library uses pip.internals. Some changes in init methods happened there.
+# So version 1.3.3 is useless with pip 19+ and newer versions will break pipenv
+# because pipenv has bundled patched pip.
 Provides:       bundled(python3dist(requirementslib)) == 1.3.3
-# dependency of passa
+# Dependency of passa
 Provides:       bundled(python3dist(resolvelib)) == 0.2.2
-# not used in upstream master branch
+# No longer used in upstream master branch, not worth looking into
 Provides:       bundled(python3dist(shutilwhich)) == 1.1
 
 # The sources contains patched versions of following packages:
@@ -265,7 +265,10 @@ UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion clic
 # diff of pyenv.py:
 #  265   │ -from .vendor import attr, delegator
 #  266   │ +import attr, delegator
-# This so far only one case. This is patched out in 0002 patch in pipenv 2018.11.26
+# So we unpack such import statements into multiple lines first:
+while matches=$(grep -Elr 'from \.vendor import ([^,]+), (.+)'); do
+  sed -Ei 's/from \.vendor import ([^,]+), (.+)/from .vendor import \1\nfrom .vendor import \2/g' $matches
+done
 
 for pkg in ${UNBUNDLED[@]}; do
   find pipenv/* tests/* -not -path '*/\.git*' -type f -exec sed -i -E \

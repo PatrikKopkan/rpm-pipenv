@@ -9,18 +9,3 @@ index 822617ab..4f2c77b1 100644
 +from pytest_pypi.plugin import pypi, pypi_secure
  from vistir.compat import ResourceWarning, fs_str
  from vistir.path import mkdir_p
- 
-diff --git a/pipenv/pyenv.py b/pipenv/pyenv.py
-index bbfd1a9..e8cd153 100644
---- a/pipenv/pyenv.py
-+++ b/pipenv/pyenv.py
-@@ -1,7 +1,8 @@
- import operator
- import re
- 
--from .vendor import attr, delegator
-+from .vendor import attr
-+from .vednor import delegator
- 
- from .environments import PIPENV_INSTALL_TIMEOUT
- 
