@@ -4,7 +4,7 @@
 
 Name:           pipenv 
 Version:        2018.11.26
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        The higher level Python packaging tool
 
 # Pipenv source code is MIT, there are bundled packages having different licenses
@@ -44,17 +44,9 @@ Summary:        The higher level Python packaging tool
 # pipenv/vendor/cursor is CC-BY-SA
 # pipenv/vendor/delegator.py is MIT
 # pipenv/vendor/passa is ISC
-# pipenv/vendor/pipdeptree.py is MIT
-# pipenv/vendor/pipreqs/ is Apache2.0
-# pipenv/vendor/pip_shims/ is ISC
-# pipenv/vendor/plette/ is ISC
-# pipenv/vendor/pythonfinder/ is MIT
 # pipenv/vendor/requirementslib/ is (Apache2.0 or BSD)
 # pipenv/vendor/resolvelib/ is MIT
 # pipenv/vendor/shutilwhich/ is BSD
-# pipenv/vendor/tomlkit/ is MIT
-# pipenv/vendor/vistir/ is ISC
-# pipenv/vendor/yaspin/ is MIT
 
 License:        MIT and BSD and ASL 2.0 and LGPLv2+ and Python and ISC and MPLv2.0 and (ASL 2.0 or BSD) and CC-BY-SA
 URL:            https://github.com/pypa/pipenv
@@ -132,6 +124,14 @@ BuildRequires:  python3dist(six)
 BuildRequires:  python3dist(toml) >= 0.10
 BuildRequires:  python3dist(urllib3)
 BuildRequires:  python3dist(yarg) >= 0.1.9
+BuildRequires:  python3dist(yaspin)
+BuildRequires:  python3dist(vistir)
+BuildRequires:  python3dist(tomlkit)
+BuildRequires:  python3dist(pipdeptree)
+BuildRequires:  python3dist(pipreqs)
+BuildRequires:  python3dist(pip-shims)
+BuildRequires:  python3dist(plette)
+BuildRequires:  python3dist(pythonfinder)
 
 %{?python_provide:%python_provide python3-%{name}}
 
@@ -172,25 +172,32 @@ Requires:       python3dist(six)
 Requires:       python3dist(toml) >= 0.10
 Requires:       python3dist(urllib3)
 Requires:       python3dist(yarg) >= 0.1.9
+Requires:       python3dist(yaspin)
+Requires:       python3dist(vistir)
+Requires:       python3dist(tomlkit)
+Requires:       python3dist(pipdeptree)
+Requires:       python3dist(pipreqs)
+Requires:       python3dist(pip-shims)
+Requires:       python3dist(plette)
+Requires:       python3dist(pythonfinder)
 
 # Following packages bundled under vendor directory are not
 # packaged for Fedora yet.
 # TODO package for Fedora and unbundle
 Provides:       bundled(python3dist(click-didyoumean)) == 0.0.3
-Provides:       bundled(python3dist(cursor)) == 1.2
 Provides:       bundled(python3dist(delegator.py)) == 0.1.1
+# Needs requirementslib (see below)
 Provides:       bundled(python3dist(passa))
-Provides:       bundled(python3dist(pipdeptree)) == 0.13
-Provides:       bundled(python3dist(pipreqs)) == 0.4.9
-Provides:       bundled(python3dist(pip-shims)) == 0.3.2
-Provides:       bundled(python3dist(plette)) == 0.2.3.dev0
-Provides:       bundled(python3dist(pythonfinder)) == 1.1.10
+# This library uses pip.internals. Some changes in init methods happened there.
+# So version 1.3.3 is useless with pip 19+ and newer versions will break pipenv
+# because pipenv has bundled patched pip.
 Provides:       bundled(python3dist(requirementslib)) == 1.3.3
+# Dependency of passa
 Provides:       bundled(python3dist(resolvelib)) == 0.2.2
+
+# No longer used in upstream master branch, not worth looking into
 Provides:       bundled(python3dist(shutilwhich)) == 1.1
-Provides:       bundled(python3dist(tomlkit)) == 0.5.2
-Provides:       bundled(python3dist(vistir)) == 0.2.5
-Provides:       bundled(python3dist(yaspin)) == 0.14
+Provides:       bundled(python3dist(cursor)) == 1.2
 
 # The sources contains patched versions of following packages:
 Provides:       bundled(python3dist(crayons)) == 0.1.2
@@ -249,7 +256,8 @@ rm pipenv/patched/notpip/_vendor/certifi/*.pem
 
 # Remove packages that are already packaged for Fedora from vendor directory
 # pathlib2 and backports are not needed on Python 3.6+
-UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports"
+UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports yaspin vistir pythonfinder plette pipreqs pipdeptree pip_shims tomlkit"
+
 # issue: for loop below doesn't handle multiple imports in one line
 # properly. There might be case when library is still not unbundled
 # but is not imported from vendor directory.
@@ -378,16 +386,9 @@ rm -rf check_pythonpath check_path
 %license %{python3_sitelib}/%{name}/vendor/click_didyoumean/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/cursor/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/passa/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/pipreqs/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/pip_shims/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/plette/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/pythonfinder/LICENSE.txt
 %license %{python3_sitelib}/%{name}/vendor/requirementslib/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/resolvelib/LICENSE
 %license %{python3_sitelib}/%{name}/vendor/shutilwhich/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/tomlkit/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/vistir/LICENSE
-%license %{python3_sitelib}/%{name}/vendor/yaspin/LICENSE
 
 %doc README.md NOTICES CHANGELOG.rst HISTORY.txt
 %{_bindir}/pipenv
@@ -400,6 +401,9 @@ rm -rf check_pythonpath check_path
 %license LICENSE
 
 %changelog
+* Fri Oct 11 2019 Patrik Kopkan <pkopkan@redhat.com> - 2018.11.26-11
+- Devendored: yaspin vistir pythonfinder plette pipreqs pipdeptree pip_shims tomlkit
+
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 2018.11.26-10
 - Rebuilt for Python 3.8.0rc1 (#1748018)
 
