@@ -60,11 +60,9 @@ License:        MIT and BSD and ASL 2.0 and LGPLv2+ and Python and ISC and MPLv2
 URL:            https://github.com/pypa/pipenv
 Source0:        https://github.com/pypa/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
-# We unbundle a plenty of packages from vendor directory
-# 'from pipenv.vendor' imports must be corrected
-# Also adds "pytest_pypi.plugin import pypi, ..." to conftest,
+# Adds "pytest_pypi.plugin import pypi, ..." to conftest,
 # as we don't have that plugin installed and it is not autodiscovered
-Patch2:         0002-fix-imports-of-unbundled-pkgs.patch
+Patch2:         0002-import-pytest-pypi.patch
 
 # A couple of tests fails in the mock environment, add option
 # to skip these using special pytest marker
@@ -252,6 +250,24 @@ rm pipenv/patched/notpip/_vendor/certifi/*.pem
 # Remove packages that are already packaged for Fedora from vendor directory
 # pathlib2 and backports are not needed on Python 3.6+
 UNBUNDLED="appdirs attr blindspin cached_property cerberus click_completion click colorama distlib docopt first chardet iso8601 jinja2 markupsafe packaging parse pexpect ptyprocess pyparsing dotenv requests certifi idna urllib3 scandir semver shellingham six toml yarg pathlib2 backports"
+# issue: for loop below doesn't handle multiple imports in one line
+# properly. There might be case when library is still not unbundled
+# but is not imported from vendor directory.
+# diff of pyenv.py:
+#  265   │ -from .vendor import attr, delegator
+#  266   │ +import attr, delegator
+# So we unpack such import statements into multiple lines first:
+while matches=$(grep -Elr 'from (\.pipenv)?\.vendor import ([^,]+), (.+)'); do
+  sed -Ei 's/from (\.pipenv)?\.vendor import ([^,]+), (.+)/from \1.vendor import \2\nfrom \1.vendor import \3/g' $matches
+done
+
+for pkg in ${UNBUNDLED[@]}; do
+  find pipenv/* tests/* -not -path '*/\.git*' -type f -exec sed -i -E \
+  -e "s/from (pipenv)?\.vendor\.${pkg}(\.\S+)? import/from ${pkg}\2 import/" \
+  -e "s/^import (pipenv)?\.vendor\.${pkg}(\.\S+)?/import ${pkg}\2/" \
+  -e "s/from (pipenv)?\.vendor import ${pkg}(\.\S+)?/import ${pkg}\2/" \
+  -e "s/(pipenv)?\.vendor\.${pkg}(\.\S+)?/${pkg}\2/g" {} \;
+done
 
 _vendordir="pipenv/vendor/"
 

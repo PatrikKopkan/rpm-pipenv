@@ -1,0 +1,11 @@
+diff --git a/tests/integration/conftest.py b/tests/integration/conftest.py
+index 822617ab..4f2c77b1 100644
+--- a/tests/integration/conftest.py
++++ b/tests/integration/conftest.py
+@@ -13,6 +13,7 @@ from pipenv.vendor import requests
+ from pipenv.vendor import toml
+ from pipenv.vendor import tomlkit
+ from pytest_pypi.app import prepare_packages as prepare_pypi_packages, prepare_fixtures
++from pytest_pypi.plugin import pypi, pypi_secure
+ from vistir.compat import ResourceWarning, fs_str
+ from vistir.path import mkdir_p
